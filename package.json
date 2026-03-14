@@ -1,0 +1,17 @@
+{
+  "name": "var-folders-yq-h17dmhjj3rz-6dqsnrd950gc0000gn-t-tmp-vxthlwbuvd",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.38.1",
+    "astro": "^6.0.1",
+    "sharp": "^0.34.2"
+  }
+}
