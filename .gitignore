@@ -1,0 +1,4 @@
+node_modules/
+.workplace/
+.playwright-cli/
+.DS_Store

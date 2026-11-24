@@ -1,0 +1,12 @@
+{
+  "name": "ocaml-mlx.github.io",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "start": "node --experimental-strip-types server.ts",
+    "check": "node --check app.js && node --check assets/content.js && node --check assets/templates/metadata.js && node --check server.ts"
+  }
+}

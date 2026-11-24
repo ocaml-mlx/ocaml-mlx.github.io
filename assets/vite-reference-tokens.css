@@ -1,0 +1,32 @@
+:root {
+  --reference-white: #fff;
+  --reference-primary: #16171d;
+  --reference-beige: #f4f3ec;
+  --reference-nickel: #3b3440;
+  --reference-grey: #867e8e;
+  --reference-stroke: #e5e4e7;
+  --reference-midnight: #0c0912;
+  --reference-slate: #14121a;
+  --reference-ruby: #863bff;
+  --reference-wine: #140033;
+  --reference-electric: #6c3bff;
+  --reference-vite: #b39aff;
+  --reference-space: #103;
+  --reference-zest: #22ff73;
+  --reference-fire: #f50;
+  --reference-aqua: #32f3e9;
+  --reference-heading-font: "APK Protocol", sans-serif;
+  --reference-sans-font: Inter, sans-serif;
+  --reference-mono-font: "KH Teka Mono", monospace;
+  --reference-spacing-base: .25rem;
+  --reference-radius-xs: .125rem;
+  --reference-radius-sm: .25rem;
+  --reference-radius-md: .375rem;
+  --reference-radius-lg: .5rem;
+  --reference-radius-xl: .75rem;
+  --reference-shadow-pop: 0 4px 12px #0000000f;
+  --reference-viteplus-brand-light: #4f30e8;
+  --reference-viteplus-brand-dark: #6b77f8;
+  --reference-docs-sidebar-width: 272px;
+  --reference-framework-tile: #f9f8f5;
+}
