@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="Write JSX expressions inside OCaml. This guide covers tags, attributes, children, fragments, and the syntax limits that matter when you write .mlx files." />
+    <title>JSX syntax — mlx documentation</title>
+<link rel="canonical" href="https://ocaml-mlx.github.io/docs/jsx-syntax/" />
+<meta property="og:title" content="JSX syntax — mlx documentation" />
+    <meta property="og:description" content="Write JSX expressions inside OCaml. This guide covers tags, attributes, children, fragments, and the syntax limits that matter when you write .mlx files." />
+    <meta property="og:url" content="https://ocaml-mlx.github.io/docs/jsx-syntax/" />
+    <meta property="og:type" content="website" />
+
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/assets/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/assets/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/assets/geist-fonts.css" />
+    <link rel="stylesheet" href="/assets/vite-reference-tokens.css" />
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/" aria-label="mlx home">mlx</a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="/docs/" data-page-link="docs" aria-current="page">Documentation</a>
+          <a href="/blog/" data-page-link="blog">Blog</a>
+        </nav>
+        <div class="header-actions">
+          <a href="https://opam.ocaml.org/packages/mlx/" target="_blank" rel="noopener noreferrer" aria-label="mlx on opam" title="mlx on opam"><img src="/assets/brands/opam-monochrome.png" alt="" width="24" height="24" /></a>
+          <a href="https://github.com/ocaml-mlx/mlx" target="_blank" rel="noopener noreferrer" aria-label="mlx on GitHub" title="mlx on GitHub"><img src="/assets/brands/github.svg" alt="" width="24" height="24" /></a>
+        </div>
+      </div>
+    </header>
+    <main id="content" tabindex="-1"><div class="docs-shell"><aside class="docs-sidebar"><nav class="docs-sidebar-inner" aria-label="Documentation topics"><div class="docs-nav-group"><h2>Getting started</h2><a href="/docs/" >Installation</a><a href="/docs/jsx-syntax/" aria-current="page">JSX syntax</a><a href="/docs/how-it-works/" >How it works</a><a href="/docs/for-your-agent/" >For your agent</a></div><div class="docs-nav-group"><h2>Guides</h2><a href="/docs/editor-support/" >Editor support</a><a href="/docs/ecosystem/" >Ecosystem</a><a href="/docs/libraries/" >Libraries</a></div></nav></aside><article class="docs-article"><h1>JSX syntax</h1><p class="lead">Write JSX expressions inside OCaml. This guide covers tags, attributes, children, fragments, and the syntax limits that matter when you write .mlx files.</p>
+      <h2 id="syntax-0">Start with an OCaml expression</h2>
+      <p>A <code>.mlx</code> file is OCaml with JSX expressions. You can bind an element with <code>let</code>, return one from a function, or put one inside another OCaml value. mlx does not supply HTML elements or a renderer: the functions and modules in your project decide what each tag means.</p>
+      <p>This small component needs no UI library. Its <code>createElement</code> function accepts a unit argument, a labeled <code>title</code>, and labeled <code>children</code>. Real libraries define their own element types and component signatures.</p>
+      <div class="code-block"><div class="code-block-header"><span>A component in a .mlx file</span><button class="copy-button" type="button" data-copy="module Card = struct
+  let createElement () ~title ~children =
+    (title, children)
+end
+
+let example = &lt;Card title=&quot;News&quot;&gt;&quot;Hello&quot;&lt;/Card&gt;" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code>module Card = struct
+  <span class="token-keyword">let</span> createElement () <span class="token-attribute">~title</span> <span class="token-attribute">~children</span> =
+    (title, children)
+end
+
+<span class="token-keyword">let</span> example = <span class="token-tag">&lt;Card</span> title=<span class="token-string">&quot;News&quot;</span>&gt;<span class="token-string">&quot;Hello&quot;</span><span class="token-tag">&lt;/Card</span>&gt;</code></pre></div>
+      <p>The examples below use placeholder modules such as <code>Ui</code>. Use the names and types from your chosen library. For compiler and PPX details, see <a class="text-link" href="/docs/how-it-works/">How it works</a>.</p>
+
+      <h2 id="syntax-1">Name a tag</h2>
+      <p>A lowercase tag, such as <code>&lt;div /&gt;</code>, calls a function named <code>div</code>. An uppercase tag, such as <code>&lt;Card /&gt;</code>, calls the module&rsquo;s <code>createElement</code> function. For a qualified name, the <em>last</em> segment decides: <code>&lt;Ui.button /&gt;</code> names the function <code>Ui.button</code>; <code>&lt;Ui.Icon /&gt;</code> names the module <code>Ui.Icon</code> and its <code>createElement</code> function. A runtime PPX can interpret these calls differently.</p>
+      <div class="code-block"><div class="code-block-header"><span>Names and module paths</span><button class="copy-button" type="button" data-copy="let page =
+  &lt;Ui.Layout&gt;
+    &lt;Ui.button disabled=false&gt;&quot;Save&quot;&lt;/Ui.button&gt;
+    &lt;Ui.Icon /&gt;
+  &lt;/Ui.Layout&gt;" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code><span class="token-keyword">let</span> page =
+  <span class="token-tag">&lt;Ui.Layout</span>&gt;
+    <span class="token-tag">&lt;Ui.button</span> disabled=false&gt;<span class="token-string">&quot;Save&quot;</span><span class="token-tag">&lt;/Ui.button</span>&gt;
+    <span class="token-tag">&lt;Ui.Icon</span> /&gt;
+  <span class="token-tag">&lt;/Ui.Layout</span>&gt;</code></pre></div>
+      <p>Use OCaml identifiers and module paths for tag names, not arbitrary HTML names such as <code>&lt;my-widget /&gt;</code>. Match the whole opening and closing name: <code>&lt;Ui.Layout&gt;...&lt;/Ui.Layout&gt;</code>. A self-closing tag has an empty body; <code>&lt;Card&gt;&lt;/Card&gt;</code> has one too.</p>
+
+      <h2 id="syntax-2">Pass attributes</h2>
+      <p>Attributes are labeled OCaml arguments. <code>required=true</code> passes a Boolean value; a bare <code>readonly</code> passes the variable <code>readonly</code>, <strong>not</strong> <code>true</code>. Write <code>label</code> instead of <code>label=label</code> when a variable has the same name. The called function sets the accepted labels and their types.</p>
+      <div class="code-block"><div class="code-block-header"><span>Attributes and optional arguments</span><button class="copy-button" type="button" data-copy="let field ~label ?placeholder ~readonly () =
+  &lt;Ui.input
+    label
+    ?placeholder
+    readonly
+    required=true
+    width=(max 1 (String.length label))
+  /&gt;" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code><span class="token-keyword">let</span> field <span class="token-attribute">~label</span> ?placeholder <span class="token-attribute">~readonly</span> () =
+  <span class="token-tag">&lt;Ui.input</span>
+    label
+    ?placeholder
+    readonly
+    required=true
+    width=(max 1 (String.length label))
+  /&gt;</code></pre></div>
+      <p>Use <code>?placeholder</code> to pass an existing optional argument. Use <code>?placeholder=(Some hint)</code> to pass a chosen optional value. These forms use OCaml optional arguments; they do not make an HTML attribute optional by themselves.</p>
+      <div class="code-block"><div class="code-block-header"><span>Optional value and a parenthesized expression</span><button class="copy-button" type="button" data-copy="let search ~hint ~count () =
+  &lt;Ui.search
+    ?placeholder=(Some hint)
+    count=(count + 1)
+    onChange=(fun value -&gt; print_endline value)
+  /&gt;" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code><span class="token-keyword">let</span> search <span class="token-attribute">~hint</span> <span class="token-attribute">~count</span> () =
+  <span class="token-tag">&lt;Ui.search</span>
+    ?placeholder=(Some hint)
+    count=(count + 1)
+    onChange=(<span class="token-keyword">fun</span> value -&gt; print_endline value)
+  /&gt;</code></pre></div>
+
+      <h2 id="syntax-3">Use OCaml names for attributes</h2>
+      <p>Attribute names must be lowercase OCaml identifiers. OCaml keywords such as <code>class</code>, <code>type</code>, <code>method</code>, and <code>open</code> cannot be attribute names. Use the actual label defined by your library, often <code>class_</code> or <code>type_</code>. mlx does not remove the underscore or rename the label. A hyphenated HTML name such as <code>aria-label</code> is not an OCaml attribute name; follow your library&rsquo;s convention instead.</p>
+
+      <h2 id="syntax-4">Use expressions as attribute values</h2>
+      <p>You can use OCaml literals, identifiers, constructors, variants, field access, lists, arrays, records, and even another JSX element as values. Dereferences such as <code>!value</code> and object method calls such as <code>object_#method_</code> are also expressions. Parenthesize a compound expression: a function call, negative number, operator expression, <code>if</code>, <code>match</code>, <code>fun</code>, <code>let</code>, or type annotation. The compiler checks each value against the receiving function's type.</p>
+      <div class="code-block"><div class="code-block-header"><span>OCaml expressions as attribute values</span><button class="copy-button" type="button" data-copy="let view ~count ~items () =
+  &lt;Ui.panel
+    state=`Ready
+    fallback=(&lt;Ui.empty /&gt;)
+    options=[1; 2; 3]
+    positions=[|0; count|]
+    config={ width = count; items }
+    value=(if count &gt; 0 then count else 1)
+  /&gt;" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code><span class="token-keyword">let</span> view <span class="token-attribute">~count</span> <span class="token-attribute">~items</span> () =
+  <span class="token-tag">&lt;Ui.panel</span>
+    state=`Ready
+    fallback=(<span class="token-tag">&lt;Ui.empty</span> /&gt;)
+    options=[1; 2; 3]
+    positions=[|0; count|]
+    config={ width = count; items }
+    value=(<span class="token-keyword">if</span> count &gt; 0 <span class="token-keyword">then</span> count <span class="token-keyword">else</span> 1)
+  /&gt;</code></pre></div>
+      <p>For example, write <code>size=(to_size count)</code>. Without parentheses, <code>size=to_size count</code> is a <code>size</code> attribute plus a separate punned <code>count</code> attribute. For a JSX-valued attribute, parentheses also keep <code>=</code> separate from the tag's <code>&lt;</code>: write <code>fallback=(&lt;Ui.empty /&gt;)</code>. A braced value such as <code>config={ width = count }</code> is an OCaml record, not JSX interpolation. There is no props spread such as <code>&lt;Ui.panel ...props /&gt;</code>.</p>
+
+      <h2 id="syntax-5">Write children as OCaml values</h2>
+      <p>Put expressions between an opening and closing tag. Separate children with whitespace or newlines. Quote literal text: <code>"hello world"</code> is a string, while <code>hello world</code> is <em>two variables</em>. Whitespace between children does not produce a text node. mlx does not convert other values to strings; your runtime decides what children it accepts.</p>
+      <div class="code-block"><div class="code-block-header"><span>Quoted text, variables, and expressions</span><button class="copy-button" type="button" data-copy="let greeting ~name ~count () =
+  &lt;div&gt;
+    (&quot;Hello, &quot; ^ name)
+    &lt;span&gt;(string_of_int count)&lt;/span&gt;
+    (if count = 1 then &quot;item&quot; else &quot;items&quot;)
+  &lt;/div&gt;" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code><span class="token-keyword">let</span> greeting <span class="token-attribute">~name</span> <span class="token-attribute">~count</span> () =
+  <span class="token-tag">&lt;div</span>&gt;
+    (<span class="token-string">&quot;Hello, &quot;</span> ^ name)
+    <span class="token-tag">&lt;span</span>&gt;(string_of_int count)<span class="token-tag">&lt;/span</span>&gt;
+    (<span class="token-keyword">if</span> count = 1 <span class="token-keyword">then</span> <span class="token-string">&quot;item&quot;</span> <span class="token-keyword">else</span> <span class="token-string">&quot;items&quot;</span>)
+  <span class="token-tag">&lt;/div</span>&gt;</code></pre></div>
+      <p>Use parentheses for one compound child. <code>&lt;div&gt;string_of_int count&lt;/div&gt;</code> has two children, the function and its argument. Write <code>&lt;div&gt;(string_of_int count)&lt;/div&gt;</code> instead. You can write <code>(match x with ...)</code>, <code>(let x = ... in ...)</code>, or <code>(value : type_name)</code> the same way. Combine text and a variable into one child with <code>("Hello, " ^ name)</code>.</p>
+
+      <h2 id="syntax-6">Place elements inside other OCaml code</h2>
+      <p>An element is an expression, not a separate template file. It can be a list or array item, a record field, or a function argument without parentheses. Ordinary OCaml syntax around the element remains available.</p>
+      <div class="code-block"><div class="code-block-header"><span>Elements in ordinary OCaml values</span><button class="copy-button" type="button" data-copy="let entries = [&lt;Ui.row&gt;&quot;First&quot;&lt;/Ui.row&gt;; &lt;Ui.row&gt;&quot;Second&quot;&lt;/Ui.row&gt;]
+let columns = [|&lt;Ui.column /&gt;; &lt;Ui.column /&gt;|]
+let page = { view = &lt;Ui.row&gt;&quot;Ready&quot;&lt;/Ui.row&gt;; count = 1 }
+let result = render &lt;Ui.row&gt;&quot;Done&quot;&lt;/Ui.row&gt;" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code><span class="token-keyword">let</span> entries = [<span class="token-tag">&lt;Ui.row</span>&gt;<span class="token-string">&quot;First&quot;</span><span class="token-tag">&lt;/Ui.row</span>&gt;; <span class="token-tag">&lt;Ui.row</span>&gt;<span class="token-string">&quot;Second&quot;</span><span class="token-tag">&lt;/Ui.row</span>&gt;]
+<span class="token-keyword">let</span> columns = [|<span class="token-tag">&lt;Ui.column</span> /&gt;; <span class="token-tag">&lt;Ui.column</span> /&gt;|]
+<span class="token-keyword">let</span> page = { view = <span class="token-tag">&lt;Ui.row</span>&gt;<span class="token-string">&quot;Ready&quot;</span><span class="token-tag">&lt;/Ui.row</span>&gt;; count = 1 }
+<span class="token-keyword">let</span> result = render <span class="token-tag">&lt;Ui.row</span>&gt;<span class="token-string">&quot;Done&quot;</span><span class="token-tag">&lt;/Ui.row</span>&gt;</code></pre></div>
+
+      <h2 id="syntax-7">Use OCaml comments</h2>
+      <p>Write <code>(* ... *)</code> between attributes or children. Comments do not create attributes or children. They follow the usual OCaml comment rules.</p>
+      <div class="code-block"><div class="code-block-header"><span>OCaml comments between attributes and children</span><button class="copy-button" type="button" data-copy="let note =
+  &lt;Ui.note
+    title=&quot;Notice&quot;
+    (* This comment is not an attribute. *)
+    level=2
+  &gt;
+    &quot;Read this&quot;
+    (* This comment is not a child. *)
+    &lt;Ui.link&gt;&quot;More&quot;&lt;/Ui.link&gt;
+  &lt;/Ui.note&gt;" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code><span class="token-keyword">let</span> note =
+  <span class="token-tag">&lt;Ui.note</span>
+    title=<span class="token-string">&quot;Notice&quot;</span>
+    (* This comment is not an attribute. *)
+    level=2
+  &gt;
+    <span class="token-string">&quot;Read this&quot;</span>
+    (* This comment is not a child. *)
+    <span class="token-tag">&lt;Ui.link</span>&gt;<span class="token-string">&quot;More&quot;</span><span class="token-tag">&lt;/Ui.link</span>&gt;
+  <span class="token-tag">&lt;/Ui.note</span>&gt;</code></pre></div>
+
+      <h2 id="syntax-8">Pass children in one place</h2>
+      <p>An element always passes a <code>children</code> argument, even when its body is empty. You can supply an existing value with a punned <code>children</code> attribute or with <code>children=value</code>. An optional <code>?children</code> follows the same rule. Pass children <strong>either</strong> as an attribute <strong>or</strong> between tags, not both. The latest upstream parser rejects an explicit <code>children</code> or <code>?children</code> combined with nested content; an empty body is allowed.</p>
+      <div class="code-block"><div class="code-block-header"><span>Forward children as an attribute</span><button class="copy-button" type="button" data-copy="let forward children =
+  &lt;Card children /&gt;
+
+let empty_body children =
+  &lt;Card children&gt;&lt;/Card&gt;" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code><span class="token-keyword">let</span> forward children =
+  <span class="token-tag">&lt;Card</span> children /&gt;
+
+<span class="token-keyword">let</span> empty_body children =
+  <span class="token-tag">&lt;Card</span> children&gt;<span class="token-tag">&lt;/Card</span>&gt;</code></pre></div>
+
+      <h2 id="syntax-9">Group with fragments (mlx 0.12+)</h2>
+      <p>A fragment uses <code>&lt;&gt;</code> and <code>&lt;/&gt;</code> without a named tag. It can be empty, contain multiple children, or nest inside an element or another fragment. A nested fragment stays one child in its parent; mlx does not flatten it automatically. The chosen runtime decides how fragments render.</p>
+      <div class="code-block"><div class="code-block-header"><span>Empty, nested, and parenthesized fragments</span><button class="copy-button" type="button" data-copy="let empty = &lt;&gt;&lt;/&gt;
+let pair = &lt;&gt;&lt;Header /&gt;&lt;Footer /&gt;&lt;/&gt;
+let inside = &lt;Ui.panel&gt;&lt;&gt;&quot;Left&quot; &quot;Right&quot;&lt;/&gt;&lt;/Ui.panel&gt;
+let nested = &lt;&gt;&lt;&gt; &quot;one&quot; &lt;/&gt;&lt;&gt; &quot;two&quot; &lt;/&gt;&lt;/&gt;
+let argument = consume (&lt;&gt; &quot;before&quot; &quot;after&quot; &lt;/&gt;)" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code><span class="token-keyword">let</span> empty = &lt;&gt;&lt;/&gt;
+<span class="token-keyword">let</span> pair = &lt;&gt;<span class="token-tag">&lt;Header</span> /&gt;<span class="token-tag">&lt;Footer</span> /&gt;&lt;/&gt;
+<span class="token-keyword">let</span> inside = <span class="token-tag">&lt;Ui.panel</span>&gt;&lt;&gt;<span class="token-string">&quot;Left&quot;</span> <span class="token-string">&quot;Right&quot;</span><span class="token-tag">&lt;/&gt;</span><span class="token-tag">&lt;/Ui.panel</span>&gt;
+<span class="token-keyword">let</span> nested = &lt;&gt;&lt;&gt; <span class="token-string">&quot;one&quot;</span> &lt;/&gt;&lt;&gt; <span class="token-string">&quot;two&quot;</span> &lt;/&gt;&lt;/&gt;
+<span class="token-keyword">let</span> argument = consume (&lt;&gt; <span class="token-string">&quot;before&quot;</span> <span class="token-string">&quot;after&quot;</span> &lt;/&gt;)</code></pre></div>
+      <p>Unlike an element, a fragment passed directly as a function argument needs parentheses: <code>consume (&lt;&gt;"one"&lt;/&gt;)</code>. Fragments arrived in mlx 0.12; do not use them with an older version.</p>
+
+      <h2 id="syntax-10">Spread one children value (mlx 0.12+)</h2>
+      <p>When you already have a children value, prefix it with <code>...</code> <em>inside</em> an element or fragment. The spread must be its only child. It passes the existing value directly rather than adding it as one item of a new children list. Parenthesize a function call after the dots. Spaces around the dots are optional.</p>
+      <div class="code-block"><div class="code-block-header"><span>Forward an existing children value</span><button class="copy-button" type="button" data-copy="let forward children = &lt;Card&gt;...children&lt;/Card&gt;
+let mapped items = &lt;Card&gt;...(List.map render_item items)&lt;/Card&gt;
+let grouped children = &lt;&gt;...children&lt;/&gt;" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code><span class="token-keyword">let</span> forward children = <span class="token-tag">&lt;Card</span>&gt;...children<span class="token-tag">&lt;/Card</span>&gt;
+<span class="token-keyword">let</span> mapped items = <span class="token-tag">&lt;Card</span>&gt;...(List.map render_item items)<span class="token-tag">&lt;/Card</span>&gt;
+<span class="token-keyword">let</span> grouped children = &lt;&gt;...children&lt;/&gt;</code></pre></div>
+      <p><code>&lt;Card&gt;"first" ...rest&lt;/Card&gt;</code>, <code>&lt;Card&gt;...rest "last"&lt;/Card&gt;</code>, and the equivalent mixed fragments are syntax errors. <code>&lt;&gt;...children&lt;/&gt;</code> marks the existing value as a fragment. The dots do not spread attributes.</p>
+
+      <h2 id="syntax-11">Keep delimiters and operators distinct</h2>
+      <p>Closing names must match: <code>&lt;Ui.Card&gt;...&lt;/Ui.Card&gt;</code> cannot close as <code>&lt;/Card&gt;</code> or <code>&lt;/&gt;</code>. A fragment must close with <code>&lt;/&gt;</code>. OCaml&rsquo;s <code>&lt;&gt;</code> inequality operator and the <code>&lt;/&gt;</code> operator remain available. Inside a fragment, parenthesize an operator expression so it cannot be mistaken for the fragment delimiter.</p>
+      <div class="code-block"><div class="code-block-header"><span>Operators and parentheses near JSX</span><button class="copy-button" type="button" data-copy="let less_than = a &lt; b
+let unequal = a &lt;&gt; b
+let child = &lt;Ui.row&gt;(a &lt; b)&lt;/Ui.row&gt;
+let fragment = &lt;&gt;(a &lt;&gt; b)&lt;/&gt;
+let custom_operator = &lt;&gt;(a &lt;/&gt; b)&lt;/&gt;" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code><span class="token-keyword">let</span> less_than = a &lt; b
+<span class="token-keyword">let</span> unequal = a &lt;&gt; b
+<span class="token-keyword">let</span> child = <span class="token-tag">&lt;Ui.row</span>&gt;(a &lt; b)<span class="token-tag">&lt;/Ui.row</span>&gt;
+<span class="token-keyword">let</span> fragment = &lt;&gt;(a &lt;&gt; b)&lt;/&gt;
+<span class="token-keyword">let</span> custom_operator = &lt;&gt;(a &lt;/&gt; b)&lt;/&gt;</code></pre></div>
+      <p>Put spaces around a less-than comparison, <code>a &lt; b</code>: without a space, <code>a&lt;b</code> can be read as the start of a JSX tag. Parenthesize comparisons inside children and attribute values. The sequence <code>&gt;...</code> is reserved for children spread, so an operator beginning with it is unavailable in mlx 0.12. Some operator prefixes adjacent to fragment delimiters also changed in 0.12; check the <a class="text-link" href="https://github.com/ocaml-mlx/mlx/blob/e4580608d2d34904d27b766df8dc07f89b47edb9/CHANGES" target="_blank" rel="noopener noreferrer">0.12 release notes</a> if you use custom symbolic operators.</p>
+
+      <h2 id="syntax-12">Check the source</h2>
+      <p>These rules follow the upstream <a class="text-link" href="https://github.com/ocaml-mlx/mlx/blob/e4580608d2d34904d27b766df8dc07f89b47edb9/test/mlx.t" target="_blank" rel="noopener noreferrer">JSX and fragment tests</a> and <a class="text-link" href="https://github.com/ocaml-mlx/mlx/blob/e4580608d2d34904d27b766df8dc07f89b47edb9/test/overrides.t" target="_blank" rel="noopener noreferrer">OCaml delimiter tests</a> at commit <code>e4580608</code>. Tests confirm parser behavior, not the types or output of any particular UI library. Use your library&rsquo;s documentation to check prop names, child types, and rendering.</p>
+    <a class="docs-next" href="/docs/how-it-works/"><span>Continue reading</span>How it works →</a></article><aside class="docs-toc" aria-label="On this page"><div class="docs-toc-inner"><h2>On this page</h2><a href="#syntax-0">Start with an OCaml expression</a><a href="#syntax-1">Name a tag</a><a href="#syntax-2">Pass attributes</a><a href="#syntax-3">Use OCaml names for attributes</a><a href="#syntax-4">Use expressions as attribute values</a><a href="#syntax-5">Write children as OCaml values</a><a href="#syntax-6">Place elements inside other OCaml code</a><a href="#syntax-7">Use OCaml comments</a><a href="#syntax-8">Pass children in one place</a><a href="#syntax-9">Group with fragments (mlx 0.12+)</a><a href="#syntax-10">Spread one children value (mlx 0.12+)</a><a href="#syntax-11">Keep delimiters and operators distinct</a><a href="#syntax-12">Check the source</a></div></aside></div><footer class="footer"><div class="footer-inner">
+  <div class="footer-column"><h2>Explore</h2><a href="/">Overview</a><a href="/#jsx">What is JSX?</a><a href="/#projects">Built with mlx</a></div>
+  <div class="footer-column"><h2>Learn</h2><a href="/docs/">Installation</a><a href="/docs/jsx-syntax/">JSX syntax</a><a href="/docs/how-it-works/">How it works</a><a href="/docs/for-your-agent/">For your agent</a><a href="/docs/ecosystem/">Ecosystem</a><a href="/docs/libraries/">Libraries</a></div>
+  <div class="footer-column"><h2>Connect</h2><a href="https://github.com/ocaml-mlx/mlx" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://discord.gg/ocaml" target="_blank" rel="noopener noreferrer">OCaml Discord</a><a href="https://github.com/ocaml-mlx/mlx/issues" target="_blank" rel="noopener noreferrer">Issues</a></div>
+  <div class="footer-column"><h2>More</h2><a href="/blog/">Blog</a><a href="https://opam.ocaml.org/packages/mlx/" target="_blank" rel="noopener noreferrer">opam</a><a href="https://github.com/ocaml-mlx/mlx/releases" target="_blank" rel="noopener noreferrer">Releases</a></div>
+</div></footer></main>
+  </body>
+</html>

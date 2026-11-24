@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="Install the syntax package, register the .mlx dialect with Dune, and keep your editor and formatter in step." />
+    <title>Installation — mlx documentation</title>
+<link rel="canonical" href="https://ocaml-mlx.github.io/docs/" />
+<meta property="og:title" content="Installation — mlx documentation" />
+    <meta property="og:description" content="Install the syntax package, register the .mlx dialect with Dune, and keep your editor and formatter in step." />
+    <meta property="og:url" content="https://ocaml-mlx.github.io/docs/" />
+    <meta property="og:type" content="website" />
+
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/assets/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/assets/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/assets/geist-fonts.css" />
+    <link rel="stylesheet" href="/assets/vite-reference-tokens.css" />
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/" aria-label="mlx home">mlx</a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="/docs/" data-page-link="docs" aria-current="page">Documentation</a>
+          <a href="/blog/" data-page-link="blog">Blog</a>
+        </nav>
+        <div class="header-actions">
+          <a href="https://opam.ocaml.org/packages/mlx/" target="_blank" rel="noopener noreferrer" aria-label="mlx on opam" title="mlx on opam"><img src="/assets/brands/opam-monochrome.png" alt="" width="24" height="24" /></a>
+          <a href="https://github.com/ocaml-mlx/mlx" target="_blank" rel="noopener noreferrer" aria-label="mlx on GitHub" title="mlx on GitHub"><img src="/assets/brands/github.svg" alt="" width="24" height="24" /></a>
+        </div>
+      </div>
+    </header>
+    <main id="content" tabindex="-1"><div class="docs-shell"><aside class="docs-sidebar"><nav class="docs-sidebar-inner" aria-label="Documentation topics"><div class="docs-nav-group"><h2>Getting started</h2><a href="/docs/" aria-current="page">Installation</a><a href="/docs/jsx-syntax/" >JSX syntax</a><a href="/docs/how-it-works/" >How it works</a><a href="/docs/for-your-agent/" >For your agent</a></div><div class="docs-nav-group"><h2>Guides</h2><a href="/docs/editor-support/" >Editor support</a><a href="/docs/ecosystem/" >Ecosystem</a><a href="/docs/libraries/" >Libraries</a></div></nav></aside><article class="docs-article"><h1>Installation</h1><p class="lead">Install the syntax package, register the .mlx dialect with Dune, and keep your editor and formatter in step.</p><h2 id="installation-0">Prerequisites</h2>
+      <p>This guide uses opam and Dune. Before installing mlx, you need:</p>
+      <ul>
+        <li><strong>An active opam switch.</strong> Run these commands in the environment for the project you want to change.</li>
+        <li><strong>OCaml 4.14 or newer.</strong> This is the minimum compiler version declared by the <a class="text-link" href="https://github.com/ocaml-mlx/mlx/blob/e4580608d2d34904d27b766df8dc07f89b47edb9/mlx.opam" target="_blank" rel="noopener noreferrer">mlx package</a>. Use companion editor and formatter versions compatible with your switch.</li>
+        <li><strong>Dune 3.16 or newer.</strong> The dialect below uses <code>merlin_reader</code>, available from Dune 3.16. Your <code>dune-project</code> must also declare <code>(lang dune 3.16)</code> or a newer language version supported by your installed Dune.</li>
+        <li><strong>A Dune project.</strong> Work from the directory containing <code>dune-project</code>. If you are starting from scratch, <a class="text-link" href="/docs/how-it-works/">the standalone example</a> includes a complete project.</li>
+      </ul>
+      <p>Check your active switch and tool versions:</p>
+      <div class="code-block"><div class="code-block-header"><span>Check your environment · shell</span><button class="copy-button" type="button" data-copy="opam switch show
+ocamlc -version
+dune --version" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code>opam switch show
+ocamlc -version
+dune --version</code></pre></div>
+      <h2 id="installation-1">Install mlx</h2>
+      <p>Start with the syntax package. Add its companion packages for formatting and editor support.</p>
+      <div class="command"><code><span class="prompt">$</span>opam install mlx ocamlformat-mlx ocamlmerlin-mlx</code><button class="copy-button" type="button" data-copy="opam install mlx ocamlformat-mlx ocamlmerlin-mlx" aria-label="Copy opam install mlx ocamlformat-mlx ocamlmerlin-mlx"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>Copy</span></button></div>
+      <p>You can also install only <code>mlx</code> first with <code>opam install mlx</code>.</p>
+      <h2 id="installation-2">Add the Dune dialect</h2>
+      <p>Place this dialect in <code>dune-project</code>. It connects the file extension, Merlin reader, formatter, and preprocessing step. If you installed only <code>mlx</code>, leave out <code>merlin_reader</code> and <code>format</code> until you install their companion packages.</p>
+      <div class="code-block"><div class="code-block-header"><span>dune-project</span><button class="copy-button" type="button" data-copy="(dialect
+ (name mlx)
+ (implementation
+  (extension mlx)
+  (merlin_reader mlx)
+  (format
+   (run ocamlformat-mlx %{input-file}))
+  (preprocess
+   (run mlx-pp %{input-file}))))" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code>(dialect
+ (name mlx)
+ (implementation
+  (extension mlx)
+  (merlin_reader mlx)
+  (format
+   (run ocamlformat-mlx %{input-file}))
+  (preprocess
+   (run mlx-pp %{input-file}))))</code></pre></div>
+      <h2 id="installation-3">Check a module</h2>
+      <p>Add <code>Greeting.mlx</code> to a directory covered by your project's library or executable stanza, then run <code>dune build</code>:</p>
+      <div class="code-block"><div class="code-block-header"><span>Greeting.mlx</span><button class="copy-button" type="button" data-copy="let greeting ~name () =
+  &lt;div&gt;
+    &lt;h1&gt;(&quot;Hello, &quot; ^ name ^ &quot;!&quot;)&lt;/h1&gt;
+    &lt;p&gt;&quot;Welcome to mlx.&quot;&lt;/p&gt;
+  &lt;/div&gt;" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code><span class="token-keyword">let</span> greeting <span class="token-attribute">~name</span> () =
+  <span class="token-tag">&lt;div</span>&gt;
+    <span class="token-tag">&lt;h1</span>&gt;(<span class="token-string">&quot;Hello, &quot;</span> ^ name ^ <span class="token-string">&quot;!&quot;</span>)<span class="token-tag">&lt;/h1</span>&gt;
+    <span class="token-tag">&lt;p</span>&gt;<span class="token-string">&quot;Welcome to mlx.&quot;</span><span class="token-tag">&lt;/p</span>&gt;
+  <span class="token-tag">&lt;/div</span>&gt;</code></pre></div>
+      <p>In a fresh project with only the mlx toolchain and no element functions or JSX runtime PPX, you should see:</p>
+      <div class="code-block"><div class="code-block-header"><span>Expected compiler error</span><button class="copy-button" type="button" data-copy="Error: Unbound value div" aria-label="Copy code"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="4.5" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 4V2.5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1H5" stroke="currentColor" stroke-width="1.3"/></svg><span>code</span></button></div><pre><code>Error: Unbound value div</code></pre></div>
+      <p>This means the JSX syntax was parsed and the compiler reached the call to <code>div</code>. mlx does not define that function. A UI library's PPX can transform the marked calls into the library's element operations, or you can supply ordinary OCaml functions yourself.</p>
+      <h2 id="installation-4">Choose a JSX library</h2>
+      <p>Follow a library's guide to add its runtime and PPX to your Dune stanza:</p>
+      <ul>
+        <li><a class="text-link" href="https://davesnx.github.io/html_of_jsx/getting-started.html" target="_blank" rel="noopener noreferrer">html_of_jsx: Getting started</a> for HTML rendering.</li>
+        <li><a class="text-link" href="https://reasonml.github.io/reason-react/docs/en/installation" target="_blank" rel="noopener noreferrer">reason-react: Installation</a> for React with Melange. Keep the mlx dialect when using <code>.mlx</code> files.</li>
+      </ul>
+      <p>Follow that library's conventions for children and attributes too. The syntax-only example above is not a complete application for every runtime. You can also run <a class="text-link" href="/docs/how-it-works/">the self-contained compiler example</a> without a framework.</p>
+      <h2 id="installation-5">Next steps</h2>
+      <ul>
+        <li><a class="text-link" href="/docs/libraries/">Libraries</a>: choose React, HTML, terminal, or desktop integrations and their runtime setup.</li>
+        <li><a class="text-link" href="/docs/ecosystem/">Ecosystem</a>: see how the language server, formatter, PPX processors, and other OCaml tools fit together.</li>
+      </ul><a class="docs-next" href="/docs/jsx-syntax/"><span>Continue reading</span>JSX syntax →</a></article><aside class="docs-toc" aria-label="On this page"><div class="docs-toc-inner"><h2>On this page</h2><a href="#installation-0">Prerequisites</a><a href="#installation-1">Install mlx</a><a href="#installation-2">Add the Dune dialect</a><a href="#installation-3">Check a module</a><a href="#installation-4">Choose a JSX library</a><a href="#installation-5">Next steps</a></div></aside></div><footer class="footer"><div class="footer-inner">
+  <div class="footer-column"><h2>Explore</h2><a href="/">Overview</a><a href="/#jsx">What is JSX?</a><a href="/#projects">Built with mlx</a></div>
+  <div class="footer-column"><h2>Learn</h2><a href="/docs/">Installation</a><a href="/docs/jsx-syntax/">JSX syntax</a><a href="/docs/how-it-works/">How it works</a><a href="/docs/for-your-agent/">For your agent</a><a href="/docs/ecosystem/">Ecosystem</a><a href="/docs/libraries/">Libraries</a></div>
+  <div class="footer-column"><h2>Connect</h2><a href="https://github.com/ocaml-mlx/mlx" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://discord.gg/ocaml" target="_blank" rel="noopener noreferrer">OCaml Discord</a><a href="https://github.com/ocaml-mlx/mlx/issues" target="_blank" rel="noopener noreferrer">Issues</a></div>
+  <div class="footer-column"><h2>More</h2><a href="/blog/">Blog</a><a href="https://opam.ocaml.org/packages/mlx/" target="_blank" rel="noopener noreferrer">opam</a><a href="https://github.com/ocaml-mlx/mlx/releases" target="_blank" rel="noopener noreferrer">Releases</a></div>
+</div></footer></main>
+  </body>
+</html>

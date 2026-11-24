@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="Give your coding agent the mlx setup and syntax guides, then review its OCaml with your project&#39;s tools." />
+    <title>For your agent — mlx documentation</title>
+<link rel="canonical" href="https://ocaml-mlx.github.io/docs/for-your-agent/" />
+<meta property="og:title" content="For your agent — mlx documentation" />
+    <meta property="og:description" content="Give your coding agent the mlx setup and syntax guides, then review its OCaml with your project&#39;s tools." />
+    <meta property="og:url" content="https://ocaml-mlx.github.io/docs/for-your-agent/" />
+    <meta property="og:type" content="website" />
+
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/assets/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/assets/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/assets/geist-fonts.css" />
+    <link rel="stylesheet" href="/assets/vite-reference-tokens.css" />
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/" aria-label="mlx home">mlx</a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="/docs/" data-page-link="docs" aria-current="page">Documentation</a>
+          <a href="/blog/" data-page-link="blog">Blog</a>
+        </nav>
+        <div class="header-actions">
+          <a href="https://opam.ocaml.org/packages/mlx/" target="_blank" rel="noopener noreferrer" aria-label="mlx on opam" title="mlx on opam"><img src="/assets/brands/opam-monochrome.png" alt="" width="24" height="24" /></a>
+          <a href="https://github.com/ocaml-mlx/mlx" target="_blank" rel="noopener noreferrer" aria-label="mlx on GitHub" title="mlx on GitHub"><img src="/assets/brands/github.svg" alt="" width="24" height="24" /></a>
+        </div>
+      </div>
+    </header>
+    <main id="content" tabindex="-1"><div class="docs-shell"><aside class="docs-sidebar"><nav class="docs-sidebar-inner" aria-label="Documentation topics"><div class="docs-nav-group"><h2>Getting started</h2><a href="/docs/" >Installation</a><a href="/docs/jsx-syntax/" >JSX syntax</a><a href="/docs/how-it-works/" >How it works</a><a href="/docs/for-your-agent/" aria-current="page">For your agent</a></div><div class="docs-nav-group"><h2>Guides</h2><a href="/docs/editor-support/" >Editor support</a><a href="/docs/ecosystem/" >Ecosystem</a><a href="/docs/libraries/" >Libraries</a></div></nav></aside><article class="docs-article"><h1>For your agent</h1><p class="lead">Give your coding agent the mlx setup and syntax guides, then review its OCaml with your project's tools.</p><h2 id="agents-0">Why JSX still matters</h2>
+      <p>JSX keeps the tree of elements and components visible in the source. Nested tags show which children belong to which parent, and labeled attributes sit beside their values. This makes an agent's output easier for you to read and review than a long chain of construction calls. It does not guarantee that the output matches your intent.</p>
+      <p>In mlx, JSX-shaped expressions become OCaml calls. You can use ordinary OCaml expressions inside them, and the compiler checks the resulting calls and labels against the functions in your project. The selected library supplies the behavior; mlx does not choose a runtime. Read the <a class="text-link" href="/docs/jsx-syntax/">JSX syntax guide</a> and <a class="text-link" href="/docs/how-it-works/">how mlx works</a> for the source forms and their translation.</p>
+      <h2 id="agents-1">Skills for your agent</h2>
+      <p>Use the setup skill to configure a project and the syntax skill when writing or reviewing <code>.mlx</code> files. The skill files are hosted on GitHub; access to the repository is required.</p>
+      <div class="template-grid">
+        <a class="template-card" href="https://github.com/ocaml-mlx/skills/blob/main/skills/setup-mlx/SKILL.md" target="_blank" rel="noopener noreferrer" aria-label="Setup mlx skill on GitHub">
+          <div class="template-card-header"><h3>Setup mlx</h3><span class="template-github"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 3.86c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></span></div>
+          <p>Install the toolchain, register the Dune dialect, check editor and formatter support, and verify the build.</p>
+          <div class="template-meta"><span>Agent skill</span><span>GitHub</span></div>
+        </a>
+        <a class="template-card" href="https://github.com/ocaml-mlx/skills/blob/main/skills/mlx-syntax/SKILL.md" target="_blank" rel="noopener noreferrer" aria-label="JSX syntax skill on GitHub">
+          <div class="template-card-header"><h3>JSX syntax</h3><span class="template-github"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 3.86c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></span></div>
+          <p>Check element calls, props, children, component signatures, and expressions that need parentheses.</p>
+          <div class="template-meta"><span>Agent skill</span><span>GitHub</span></div>
+        </a>
+      </div>
+      <h2 id="agents-2">Working in an existing project</h2>
+      <p>Tell your agent which runtime and UI library the project uses. Ask it to follow the project's component signatures and attribute names instead of assuming that JSX has the same meaning in every stack. Use the setup skill if the toolchain is missing, then the syntax skill for <code>.mlx</code> edits. Run the project's build, type checks, and formatter, and review the resulting view. Compiler feedback can catch invalid calls and labels, but it cannot confirm that the interface meets your requirements.</p><a class="docs-next" href="/docs/editor-support/"><span>Continue reading</span>Editor support →</a></article><aside class="docs-toc" aria-label="On this page"><div class="docs-toc-inner"><h2>On this page</h2><a href="#agents-0">Why JSX still matters</a><a href="#agents-1">Skills for your agent</a><a href="#agents-2">Working in an existing project</a></div></aside></div><footer class="footer"><div class="footer-inner">
+  <div class="footer-column"><h2>Explore</h2><a href="/">Overview</a><a href="/#jsx">What is JSX?</a><a href="/#projects">Built with mlx</a></div>
+  <div class="footer-column"><h2>Learn</h2><a href="/docs/">Installation</a><a href="/docs/jsx-syntax/">JSX syntax</a><a href="/docs/how-it-works/">How it works</a><a href="/docs/for-your-agent/">For your agent</a><a href="/docs/ecosystem/">Ecosystem</a><a href="/docs/libraries/">Libraries</a></div>
+  <div class="footer-column"><h2>Connect</h2><a href="https://github.com/ocaml-mlx/mlx" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://discord.gg/ocaml" target="_blank" rel="noopener noreferrer">OCaml Discord</a><a href="https://github.com/ocaml-mlx/mlx/issues" target="_blank" rel="noopener noreferrer">Issues</a></div>
+  <div class="footer-column"><h2>More</h2><a href="/blog/">Blog</a><a href="https://opam.ocaml.org/packages/mlx/" target="_blank" rel="noopener noreferrer">opam</a><a href="https://github.com/ocaml-mlx/mlx/releases" target="_blank" rel="noopener noreferrer">Releases</a></div>
+</div></footer></main>
+  </body>
+</html>

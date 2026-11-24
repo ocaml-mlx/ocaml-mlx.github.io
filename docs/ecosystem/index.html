@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="mlx adds a syntax dialect to your existing OCaml project. Keep your compiler, language server, build system, and libraries." />
+    <title>Ecosystem — mlx documentation</title>
+<link rel="canonical" href="https://ocaml-mlx.github.io/docs/ecosystem/" />
+<meta property="og:title" content="Ecosystem — mlx documentation" />
+    <meta property="og:description" content="mlx adds a syntax dialect to your existing OCaml project. Keep your compiler, language server, build system, and libraries." />
+    <meta property="og:url" content="https://ocaml-mlx.github.io/docs/ecosystem/" />
+    <meta property="og:type" content="website" />
+
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/assets/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/assets/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/assets/geist-fonts.css" />
+    <link rel="stylesheet" href="/assets/vite-reference-tokens.css" />
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/" aria-label="mlx home">mlx</a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="/docs/" data-page-link="docs" aria-current="page">Documentation</a>
+          <a href="/blog/" data-page-link="blog">Blog</a>
+        </nav>
+        <div class="header-actions">
+          <a href="https://opam.ocaml.org/packages/mlx/" target="_blank" rel="noopener noreferrer" aria-label="mlx on opam" title="mlx on opam"><img src="/assets/brands/opam-monochrome.png" alt="" width="24" height="24" /></a>
+          <a href="https://github.com/ocaml-mlx/mlx" target="_blank" rel="noopener noreferrer" aria-label="mlx on GitHub" title="mlx on GitHub"><img src="/assets/brands/github.svg" alt="" width="24" height="24" /></a>
+        </div>
+      </div>
+    </header>
+    <main id="content" tabindex="-1"><div class="docs-shell"><aside class="docs-sidebar"><nav class="docs-sidebar-inner" aria-label="Documentation topics"><div class="docs-nav-group"><h2>Getting started</h2><a href="/docs/" >Installation</a><a href="/docs/jsx-syntax/" >JSX syntax</a><a href="/docs/how-it-works/" >How it works</a><a href="/docs/for-your-agent/" >For your agent</a></div><div class="docs-nav-group"><h2>Guides</h2><a href="/docs/editor-support/" >Editor support</a><a href="/docs/ecosystem/" aria-current="page">Ecosystem</a><a href="/docs/libraries/" >Libraries</a></div></nav></aside><article class="docs-article"><h1>Ecosystem</h1><p class="lead">mlx adds a syntax dialect to your existing OCaml project. Keep your compiler, language server, build system, and libraries.</p><h2 id="ecosystem-0">Your existing OCaml workflow</h2>
+      <p>Install mlx, add its editor and formatter tools, and tell Dune how to handle <code>.mlx</code> files. After syntax preprocessing, the compiler and downstream tools work with ordinary OCaml expressions and artifacts. You do not need a separate compiler, build system, or language server.</p>
+      <h2 id="ecosystem-1">OCaml LSP already works with mlx</h2>
+      <p>Use the standard <code>ocaml-lsp-server</code>. OCaml LSP <a class="text-link" href="https://github.com/ocaml/ocaml-lsp/blob/master/CHANGES.md" target="_blank" rel="noopener noreferrer">added mlx support in version 1.25.0</a>; there is no mlx-specific LSP fork to install. With a compatible language-server version, <code>ocamlmerlin-mlx</code> installed, and <code>(merlin_reader mlx)</code> in the Dune dialect, Merlin can read the syntax on behalf of the language server. Your editor can use its usual OCaml language-server integration for diagnostics, completion, and navigation.</p>
+      <p>Editor syntax highlighting still needs support for the <code>.mlx</code> extension. The <a class="text-link" href="/docs/editor-support/">Editor support guide</a> lists the available integrations.</p>
+      <h2 id="ecosystem-2">Two editor and formatter adaptations</h2>
+      <p>Beyond the <code>mlx</code> syntax package itself, two tools adapt the parts of the workflow that must read or write JSX source:</p>
+      <ul>
+        <li><strong><a class="text-link" href="https://github.com/ocaml-mlx/mlx" target="_blank" rel="noopener noreferrer">ocamlmerlin-mlx</a>.</strong> The mlx-specific Merlin parser and reader extension. It teaches Merlin to read <code>.mlx</code> source and supplies an OCaml syntax tree to the existing editor tooling.</li>
+        <li><strong><a class="text-link" href="https://github.com/ocaml-mlx/ocamlformat-mlx" target="_blank" rel="noopener noreferrer">ocamlformat-mlx</a>.</strong> The OCamlFormat fork that understands JSX syntax and preserves it when formatting <code>.mlx</code> files.</li>
+      </ul>
+      <p>These are the two mlx-specific editor/formatter tools. Keep the standard <code>ocaml-lsp-server</code>, Dune, and OCaml compiler. A compile-only setup can use <code>mlx-pp</code> without either companion tool.</p>
+      <h2 id="ecosystem-3">Tell Dune about the dialect</h2>
+      <p>The dialect maps <code>.mlx</code> to an implementation source, runs <code>mlx-pp</code> to produce an OCaml syntax tree, and selects the reader and formatter. Your library and executable stanzas continue to declare their dependencies and PPX processors in the normal way.</p>
+      <p>Copy the dialect from <a class="text-link" href="/docs/">Installation</a>, or read <a class="text-link" href="/docs/how-it-works/">How it works</a> for each field and the compilation steps.</p>
+      <h2 id="ecosystem-4">The rest of the ecosystem</h2>
+      <ul>
+        <li><strong>ppxlib and PPX processors.</strong> They receive an OCaml syntax tree. A JSX-aware PPX can use the <code>[@JSX]</code> marker to implement a library's component conventions. Other PPX processors keep their usual roles in the project's preprocessing chain.</li>
+        <li><strong>js_of_ocaml.</strong> It compiles the OCaml bytecode produced after syntax preprocessing and compilation. It does not need its own mlx parser.</li>
+        <li><strong>Melange.</strong> It compiles the resulting OCaml code to JavaScript through its existing Dune integration. Choose the runtime libraries and PPX your browser application needs.</li>
+        <li><strong>odoc.</strong> It works from the compiler's documentation artifacts. The JSX syntax is handled earlier in the build, rather than by a separate documentation compiler.</li>
+        <li><strong>opam and Dune.</strong> Install dependencies, build libraries and executables, and run tests with the same package manager and build commands you already use.</li>
+      </ul>
+      <p>mlx changes how you write expressions, not which runtime renders them. See <a class="text-link" href="/docs/libraries/">Libraries</a> for React, HTML, terminal, and desktop integrations.</p><h2 id="ecosystem-5">Try mlx in a browser</h2><p>The <a class="text-link" href="https://melange.re/v7.0.1/playground/?language=OCaml" target="_blank" rel="noopener noreferrer">Melange Playground</a> has an OCaml (MLX) mode. Use it to try the syntax without installing the toolchain.</p><a class="docs-next" href="/docs/libraries/"><span>Continue reading</span>Libraries →</a></article><aside class="docs-toc" aria-label="On this page"><div class="docs-toc-inner"><h2>On this page</h2><a href="#ecosystem-0">Your existing OCaml workflow</a><a href="#ecosystem-1">OCaml LSP already works with mlx</a><a href="#ecosystem-2">Two editor and formatter adaptations</a><a href="#ecosystem-3">Tell Dune about the dialect</a><a href="#ecosystem-4">The rest of the ecosystem</a><a href="#ecosystem-5">Try mlx in a browser</a></div></aside></div><footer class="footer"><div class="footer-inner">
+  <div class="footer-column"><h2>Explore</h2><a href="/">Overview</a><a href="/#jsx">What is JSX?</a><a href="/#projects">Built with mlx</a></div>
+  <div class="footer-column"><h2>Learn</h2><a href="/docs/">Installation</a><a href="/docs/jsx-syntax/">JSX syntax</a><a href="/docs/how-it-works/">How it works</a><a href="/docs/for-your-agent/">For your agent</a><a href="/docs/ecosystem/">Ecosystem</a><a href="/docs/libraries/">Libraries</a></div>
+  <div class="footer-column"><h2>Connect</h2><a href="https://github.com/ocaml-mlx/mlx" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://discord.gg/ocaml" target="_blank" rel="noopener noreferrer">OCaml Discord</a><a href="https://github.com/ocaml-mlx/mlx/issues" target="_blank" rel="noopener noreferrer">Issues</a></div>
+  <div class="footer-column"><h2>More</h2><a href="/blog/">Blog</a><a href="https://opam.ocaml.org/packages/mlx/" target="_blank" rel="noopener noreferrer">opam</a><a href="https://github.com/ocaml-mlx/mlx/releases" target="_blank" rel="noopener noreferrer">Releases</a></div>
+</div></footer></main>
+  </body>
+</html>

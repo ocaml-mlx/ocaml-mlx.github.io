@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ocaml-mlx.github.io/sitemap.xml
