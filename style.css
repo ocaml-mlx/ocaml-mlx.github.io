@@ -147,24 +147,20 @@ svg { flex: none }
 .project-row { border-bottom: 1px solid var(--line); padding: 16px 0; display: flex; justify-content: space-between; align-items: center; gap: 15px; font-size: 16px; font-weight: 500; overflow-wrap: anywhere }
 .project-row svg { color: var(--muted) }
 .project-row:hover svg { color: var(--violet) }
-.playground-section { background: var(--reference-framework-tile); text-align: center }
+.playground-section { background: #000; color: var(--reference-white); text-align: center }
 .playground-panel { padding-top: 80px; padding-bottom: 80px }
-.playground-panel p { max-width: 650px; margin: auto; color: var(--muted); font-size: 17px }
+.playground-panel p { max-width: 650px; margin: auto; color: color-mix(in srgb, var(--reference-white) 80%, #000); font-size: 17px }
 .playground-panel .section-actions { justify-content: center }
-.closing-section { background: var(--reference-slate); color: var(--reference-white); text-align: center; border-bottom: 0 }
+.playground-panel .site-button-primary { color: var(--reference-primary); background: var(--reference-white); border-color: var(--reference-white) }
+.playground-panel .site-button-primary:hover { color: var(--reference-primary); background: var(--reference-framework-tile); border-color: var(--reference-framework-tile) }
+.playground-panel a:focus-visible { outline-color: var(--reference-aqua) }
+.closing-section { background: var(--reference-white); color: var(--ink); text-align: center; border-bottom: 0 }
 .join-panel { padding-top: 80px; padding-bottom: 80px }
-.join-panel p { max-width: 650px; margin: auto; font-size: 17px; color: var(--reference-white) }
-.join-panel .section-actions { justify-content: center }
-.join-panel .section-actions { gap: 12px }
-.join-panel .section-actions .site-button-primary { color: var(--reference-primary); background: var(--reference-white); border-color: var(--reference-white) }
-.join-panel .section-actions .site-button-primary:hover { background: var(--reference-framework-tile); border-color: var(--reference-framework-tile) }
-.join-panel .section-actions .site-button-secondary { color: var(--reference-white); background: transparent; border-color: color-mix(in srgb, var(--reference-white) 60%, var(--reference-slate)) }
-.join-panel .section-actions .site-button-secondary:hover { background: color-mix(in srgb, var(--reference-white) 10%, var(--reference-slate)) }
-.join-panel a:focus-visible { outline-color: var(--reference-aqua) }
+.join-panel p { max-width: 650px; margin: auto; font-size: 17px; color: var(--muted) }
+.join-panel .section-actions { justify-content: center; gap: 12px }
+.join-panel .site-button-primary img { filter: invert(1) }
 .footer { margin-top: 0; border-top: 1px solid var(--line); background: var(--reference-slate); color: var(--reference-white) }
-.footer-inner { max-width: 1160px; margin: auto; padding: 45px 32px 65px; display: grid; grid-template-columns: 1.5fr repeat(4, minmax(0, 1fr)); gap: 30px }
-.footer-brand { font-weight: 700; font-size: 23px; letter-spacing: -.06em }
-.footer-brand p { margin-top: 10px; color: color-mix(in srgb, var(--reference-white) 78%, var(--reference-vite)); font-size: 14px; font-weight: 400; letter-spacing: 0 }
+.footer-inner { max-width: 1160px; margin: auto; padding: 45px 32px 65px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px }
 .footer-column h2 { font-size: 14px; letter-spacing: 0; margin-bottom: 16px }
 .footer-column a { display: block; color: color-mix(in srgb, var(--reference-white) 78%, var(--reference-vite)); font-size: 14px; margin: 11px 0 }
 .footer-column a:hover { color: var(--reference-aqua) }
@@ -228,7 +224,6 @@ svg { flex: none }
   .docs-toc { display: none }
   .docs-sidebar { padding-left: 25px }
   .footer-inner { grid-template-columns: repeat(4, minmax(0, 1fr)) }
-  .footer-brand { grid-column: 1/-1 }
 }
 @media (max-width: 720px) {
   .template-grid { grid-template-columns: minmax(0, 1fr) }

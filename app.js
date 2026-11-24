@@ -3,6 +3,9 @@ import {
   projects, urls, escapeHtml, highlight
 } from "./assets/content.js";
 import { templateMetadata } from "./assets/templates/metadata.js";
+import { syntaxGuide } from "./docs/syntax.js";
+import { howItWorksGuide } from "./docs/how-it-works.js";
+import { agentGuide } from "./docs/for-your-agent.js";
 
 const params = new URLSearchParams(location.search);
 const page = ["landing", "docs", "blog"].includes(params.get("page")) ? params.get("page") : "landing";
@@ -57,9 +60,8 @@ const featuredProjects = [
   { name: "topshelf.fm", site: "https://topshelf.fm/", image: "topshelf.webp" }
 ];
 const footer = `<footer class="footer"><div class="footer-inner">
-  <div class="footer-brand">mlx<p>JSX syntax for OCaml.</p></div>
   <div class="footer-column"><h2>Explore</h2><a href="?page=landing">Overview</a><a href="?page=landing#jsx">What is JSX?</a><a href="?page=landing#projects">Built with mlx</a></div>
-  <div class="footer-column"><h2>Learn</h2><a href="?page=docs&topic=installation">Installation</a><a href="?page=docs&topic=syntax">Syntax</a><a href="?page=docs&topic=ecosystem">Ecosystem</a><a href="?page=docs&topic=libraries">Libraries</a></div>
+  <div class="footer-column"><h2>Learn</h2><a href="?page=docs&topic=installation">Installation</a><a href="?page=docs&topic=syntax">JSX syntax</a><a href="?page=docs&topic=how-it-works">How it works</a><a href="?page=docs&topic=agents">For your agent</a><a href="?page=docs&topic=ecosystem">Ecosystem</a><a href="?page=docs&topic=libraries">Libraries</a></div>
   <div class="footer-column"><h2>Connect</h2><a href="${urls.github}" target="_blank" rel="noopener noreferrer">GitHub</a><a href="${urls.discord}" target="_blank" rel="noopener noreferrer">OCaml Discord</a><a href="${editorLinks.issues}" target="_blank" rel="noopener noreferrer">Issues</a></div>
   <div class="footer-column"><h2>More</h2><a href="?page=blog">Blog</a><a href="${urls.opam}" target="_blank" rel="noopener noreferrer">opam</a><a href="${urls.releases}" target="_blank" rel="noopener noreferrer">Releases</a></div>
 </div></footer>`;
@@ -104,13 +106,40 @@ const topics = {
   installation: {
     title: "Installation",
     intro: "Install the syntax package, register the .mlx dialect with Dune, and keep your editor and formatter in step.",
-    body: `<h2>Install mlx</h2><p>Start with the syntax package. Add its companion packages for formatting and editor support.</p>${command(snippets.packages)}<p>You can also install only <code>mlx</code> first with <code>opam install mlx</code>.</p><h2>Add the Dune dialect</h2><p>Place this dialect in <code>dune-project</code>. It connects the file extension, Merlin reader, formatter, and preprocessing step.</p>${codeBlock("dune-project", snippets.dune)}<h2>Check a module</h2><p>Create a small <code>.mlx</code> file and build it with your project's normal command. Check that Dune reads it and that editor features and formatting work in that file.</p>${codeBlock("Greeting.mlx", snippets.source)}<p>mlx supplies syntax, not rendering. Choose the libraries and downstream PPX for your ${docsLink("libraries", "runtime path")}.</p>`
+    body: `<h2>Prerequisites</h2>
+      <p>This guide uses opam and Dune. Before installing mlx, you need:</p>
+      <ul>
+        <li><strong>An active opam switch.</strong> Run these commands in the environment for the project you want to change.</li>
+        <li><strong>OCaml 4.14 or newer.</strong> This is the minimum compiler version declared by the ${external("https://github.com/ocaml-mlx/mlx/blob/e4580608d2d34904d27b766df8dc07f89b47edb9/mlx.opam", "mlx package")}. Use companion editor and formatter versions compatible with your switch.</li>
+        <li><strong>Dune 3.16 or newer.</strong> The dialect below uses <code>merlin_reader</code>, available from Dune 3.16. Your <code>dune-project</code> must also declare <code>(lang dune 3.16)</code> or a newer language version supported by your installed Dune.</li>
+        <li><strong>A Dune project.</strong> Work from the directory containing <code>dune-project</code>. If you are starting from scratch, ${docsLink("how-it-works", "the standalone example")} includes a complete project.</li>
+      </ul>
+      <p>Check your active switch and tool versions:</p>
+      ${codeBlock("Check your environment · shell", "opam switch show\nocamlc -version\ndune --version")}
+      <h2>Install mlx</h2>
+      <p>Start with the syntax package. Add its companion packages for formatting and editor support.</p>
+      ${command(snippets.packages)}
+      <p>You can also install only <code>mlx</code> first with <code>opam install mlx</code>.</p>
+      <h2>Add the Dune dialect</h2>
+      <p>Place this dialect in <code>dune-project</code>. It connects the file extension, Merlin reader, formatter, and preprocessing step. If you installed only <code>mlx</code>, leave out <code>merlin_reader</code> and <code>format</code> until you install their companion packages.</p>
+      ${codeBlock("dune-project", snippets.dune)}
+      <h2>Check a module</h2>
+      <p>Add <code>Greeting.mlx</code> to a directory covered by your project's library or executable stanza, then run <code>dune build</code>:</p>
+      ${codeBlock("Greeting.mlx", snippets.source)}
+      <p>In a fresh project with only the mlx toolchain and no element functions or JSX runtime PPX, you should see:</p>
+      ${codeBlock("Expected compiler error", "Error: Unbound value div")}
+      <p>This means the JSX syntax was parsed and the compiler reached the call to <code>div</code>. mlx does not define that function. A UI library's PPX can transform the marked calls into the library's element operations, or you can supply ordinary OCaml functions yourself.</p>
+      <h2>Choose a JSX library</h2>
+      <p>Follow a library's guide to add its runtime and PPX to your Dune stanza:</p>
+      <ul>
+        <li>${external("https://davesnx.github.io/html_of_jsx/getting-started.html", "html_of_jsx: Getting started")} for HTML rendering.</li>
+        <li>${external("https://reasonml.github.io/reason-react/docs/en/installation", "reason-react: Installation")} for React with Melange. Keep the mlx dialect when using <code>.mlx</code> files.</li>
+      </ul>
+      <p>Follow that library's conventions for children and attributes too. The syntax-only example above is not a complete application for every runtime. Compare ${docsLink("libraries", "the supported library paths")}, or run ${docsLink("how-it-works", "the self-contained compiler example")} without a framework.</p>`
   },
-  syntax: {
-    title: "JSX syntax",
-    intro: "JSX-shaped source becomes OCaml expressions. The downstream library decides the meaning of the calls.",
-    body: `<h2>Source and lowering</h2><p>Here is a component with an attribute and nested elements. The lowering below is a conceptual call shape; a downstream PPX gives it meaning.</p>${codeBlock("Greeting.mlx", snippets.source)}${codeBlock("Conceptual lowering", snippets.lowered)}<h2>Tags and attributes</h2><p>Capitalized tags refer to components. Lowercase tags refer to element helpers. Attributes become labeled arguments. Each stack defines the interpretation of those calls.</p><h2>Children are OCaml values</h2><p>Use parentheses to place an OCaml expression among children. Literal text can appear directly. You remain in OCaml, not a separate template language.</p><p>For a working project, first ${docsLink("installation", "register the dialect")} and then select a ${docsLink("libraries", "UI library")}.</p>`
-  },
+  syntax: syntaxGuide({ codeBlock, docsLink, external }),
+  "how-it-works": howItWorksGuide({ codeBlock, docsLink, external }),
+  agents: agentGuide({ docsLink, githubMark }),
   editors: {
     title: "Editor support",
     intro: "Use the mlx reader, formatter, and grammar support where your editor needs them.",
@@ -133,14 +162,14 @@ topics.ecosystem.body += `<h2>Try mlx in a browser</h2><p>The ${external(playgro
 function docsPage() {
   const key = Object.hasOwn(topics, params.get("topic")) ? params.get("topic") : "installation";
   const topic = topics[key];
-  document.title = `${topic.title} — mlx guide`;
+  document.title = `${topic.title} — mlx documentation`;
   const nav = (keys, title) => `<div class="docs-nav-group"><h2>${title}</h2>${keys.map(name => `<a href="?page=docs&topic=${name}" ${name === key ? 'aria-current="page"' : ""}>${topics[name].title}</a>`).join("")}</div>`;
   const headings = [...topic.body.matchAll(/<h2>(.*?)<\/h2>/g)].map((match, index) => ({ title: match[1].replace(/<[^>]*>/g, ""), id: `${key}-${index}` }));
   let headingIndex = 0;
   const body = topic.body.replace(/<h2>/g, () => `<h2 id="${headings[headingIndex++].id}">`);
   const order = Object.keys(topics);
   const next = order[(order.indexOf(key) + 1) % order.length];
-  return `<div class="docs-shell"><aside class="docs-sidebar"><nav class="docs-sidebar-inner" aria-label="Documentation topics">${nav(["installation", "syntax"], "Getting started")}${nav(["editors", "ecosystem", "libraries"], "Guides")}</nav></aside><article class="docs-article"><h1>${topic.title}</h1><p class="lead">${topic.intro}</p>${body}<a class="docs-next" href="?page=docs&topic=${next}"><span>Continue reading</span>${topics[next].title} →</a></article><aside class="docs-toc" aria-label="On this page"><div class="docs-toc-inner"><h2>On this page</h2>${headings.map(item => `<a href="#${item.id}">${item.title}</a>`).join("")}</div></aside></div>${footer}`;
+  return `<div class="docs-shell"><aside class="docs-sidebar"><nav class="docs-sidebar-inner" aria-label="Documentation topics">${nav(["installation", "syntax", "how-it-works", "agents"], "Getting started")}${nav(["editors", "ecosystem", "libraries"], "Guides")}</nav></aside><article class="docs-article"><h1>${topic.title}</h1><p class="lead">${topic.intro}</p>${body}<a class="docs-next" href="?page=docs&topic=${next}"><span>Continue reading</span>${topics[next].title} →</a></article><aside class="docs-toc" aria-label="On this page"><div class="docs-toc-inner"><h2>On this page</h2>${headings.map(item => `<a href="#${item.id}">${item.title}</a>`).join("")}</div></aside></div>${footer}`;
 }
 
 const articles = [

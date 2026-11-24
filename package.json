@@ -7,6 +7,6 @@
   },
   "scripts": {
     "start": "node --experimental-strip-types server.ts",
-    "check": "node --check app.js && node --check assets/content.js && node --check assets/templates/metadata.js && node --check server.ts"
+    "check": "node --check app.js && node --check docs/syntax.js && node --check docs/how-it-works.js && node --check docs/for-your-agent.js && node --check assets/content.js && node --check assets/templates/metadata.js && node --check server.ts"
   }
 }

@@ -19,13 +19,12 @@ export const intro = {
 
 export const snippets = {
   source: `let greeting ~name () =
-  <div className="greeting">
+  <div>
     <h1>("Hello, " ^ name ^ "!")</h1>
     <p>"Welcome to mlx."</p>
   </div>`,
   lowered: `([@JSX]
   div(
-    ~className="greeting",
     ~children=[
       ([@JSX] h1(
         ~children=["Hello, " ^ name ^ "!"], ())),
