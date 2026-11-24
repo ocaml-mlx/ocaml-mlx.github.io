@@ -68,8 +68,7 @@ function templateCards() {
     const meta = templateMetadata[item.name];
     const stars = meta.stars.toLocaleString("en-US");
     return `<a class="template-card" href="${escapeHtml(item.href)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(item.name)}${meta.kind ? `, ${meta.kind}` : ""} on GitHub">
-      <div class="template-card-header"><img class="template-avatar" src="/assets/templates/${escapeHtml(meta.avatar)}" alt="" width="24" height="24" loading="lazy"><h3>${escapeHtml(item.name)}</h3><span class="template-github">${githubMark}</span></div>
-      ${meta.kind ? `<span class="template-kind">${escapeHtml(meta.kind)}</span>` : ""}
+      <div class="template-card-header"><img class="template-avatar" src="/assets/templates/${escapeHtml(meta.avatar)}" alt="" width="24" height="24" loading="lazy"><h3>${escapeHtml(item.name)}</h3><span class="template-github">${githubMark}</span></div>${meta.kind ? `<span class="template-kind">${escapeHtml(meta.kind)}</span>` : ""}
       <p>${escapeHtml(item.text)}</p>
       <div class="template-meta"><span class="template-language"><span class="language-dot" aria-hidden="true"></span>${escapeHtml(meta.language)}</span><span class="template-stars" aria-label="${escapeHtml(meta.starContext ?? "Repository")} stars: ${stars}" title="${escapeHtml(meta.starContext ?? "Repository")} stars">${starMark}${stars}</span></div>
     </a>`;
