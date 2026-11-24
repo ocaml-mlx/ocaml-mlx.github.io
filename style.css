@@ -183,7 +183,7 @@ svg { flex: none }
 .docs-article h3 { font-size: 19px; margin: 27px 0 11px; scroll-margin-top: 30px }
 .docs-article p, .docs-article li { font-size: 16px; line-height: 1.7; margin-bottom: 16px }
 .docs-article ul { padding-left: 22px }
-.docs-article :not(pre)>code, .article-body :not(pre)>code, .prose :not(pre)>code { font: 13px/1.4 "Geist Mono", monospace; background: #f1f0f4; border-radius: 3px; padding: 2px 5px }
+.docs-article :not(pre, .command)>code, .article-body :not(pre, .command)>code, .prose :not(pre, .command)>code { font: 13px/1.4 "Geist Mono", monospace; background: #f1f0f4; border-radius: 3px; padding: 2px 5px }
 .docs-article .command { margin: 20px 0 26px }
 .docs-article .code-block { margin: 22px 0 26px }
 .docs-article .text-link { color: var(--violet) }
