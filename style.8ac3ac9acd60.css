@@ -1,0 +1,276 @@
+:root {
+  font-family: Geist, Arial, sans-serif;
+  color: var(--reference-primary);
+  background: var(--reference-white);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  --ink: var(--reference-primary);
+  --muted: var(--reference-nickel);
+  --line: var(--reference-stroke);
+  --soft: var(--reference-beige);
+  --violet: var(--reference-viteplus-brand-light);
+  --violet-dark: color-mix(in srgb, var(--reference-viteplus-brand-light) 78%, var(--reference-primary));
+}
+* { box-sizing: border-box }
+html { scroll-behavior: smooth; scroll-padding-top: 96px }
+body { margin: 0; min-width: 320px }
+button, input { font: inherit }
+button { cursor: pointer }
+a { color: inherit; text-decoration: none }
+a:hover { color: var(--violet) }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px }
+::selection { background: var(--reference-vite); color: var(--ink) }
+::-webkit-scrollbar { width: 10px; height: 10px }
+::-webkit-scrollbar-thumb { background: var(--reference-nickel); border: 3px solid var(--reference-white); border-radius: 9px }
+h1, h2, h3, p, pre { margin: 0 }
+h1, h2, h3 { letter-spacing: -.035em }
+p { line-height: 1.65 }
+svg { flex: none }
+.skip-link { position: absolute; top: -100px; left: 16px; z-index: 9; padding: 10px; background: #fff; border: 1px solid var(--violet) }
+.skip-link:focus { top: 10px }
+.site-header { height: 64px; border-bottom: 1px solid var(--line); background: var(--reference-white); position: relative; z-index: 3 }
+.header-inner { max-width: 1440px; height: 100%; margin: auto; padding: 0 32px; display: flex; align-items: center; gap: 48px }
+.brand { font-size: 27px; font-weight: 700; letter-spacing: -.04em; color: var(--ink); line-height: 1 }
+.brand span { color: var(--violet); padding-left: 2px }
+.main-nav { display: flex; align-items: center; gap: 30px; height: 100% }
+.main-nav a { display: flex; align-items: center; height: 100%; font-size: 14px; font-weight: 500; color: var(--muted) }
+.main-nav a:hover, .main-nav a[aria-current=page] { color: var(--violet) }
+.main-nav a[aria-current=page] { box-shadow: inset 0 -2px var(--violet) }
+.header-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; flex: none }
+.header-actions a { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--reference-radius-md) }
+.header-actions img { display: block; width: 24px; height: 24px; object-fit: contain; opacity: .4 }
+.header-actions a:hover img, .header-actions a:focus-visible img { opacity: .95 }
+.landing { max-width: 1440px; margin: auto; border-left: 1px solid var(--line); border-right: 1px solid var(--line) }
+.hero { text-align: center; padding: calc(var(--reference-spacing-base) * 18) calc(var(--reference-spacing-base) * 6) calc(var(--reference-spacing-base) * 12) }
+.hero h1 { max-width: 900px; margin: auto; font-size: clamp(44px, 5vw, 72px); font-weight: 600; line-height: 1.08; letter-spacing: -.04em; text-wrap: balance }
+.hero .lead { max-width: 650px; margin: 20px auto 0; font-size: 18px; line-height: 1.55; color: var(--muted) }
+.hero-command { width: min(460px, 100%); margin: 28px auto 0 }
+.hero-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 16px }
+.hero-prompt { min-width: 240px }
+.hero-prompt:disabled { opacity: .65; cursor: wait }
+.site-button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 8px 16px; border: 1px solid var(--line); border-radius: 8px; font: 500 16px/1.4 Geist, Arial, sans-serif; text-decoration: none; text-align: center }
+.site-button svg, .site-button img { width: 20px; height: 20px; flex: none }
+.site-button-primary { color: var(--reference-white); background: var(--reference-primary); border-color: var(--reference-primary) }
+.site-button-primary:hover { color: var(--reference-white); background: #303137; border-color: #303137 }
+.site-button-secondary { color: var(--ink); background: transparent }
+.site-button-secondary:hover { color: var(--ink); background: var(--reference-framework-tile) }
+.text-link { color: var(--violet); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px }
+.text-link:hover { color: var(--violet-dark) }
+.command { display: flex; align-items: center; gap: 12px; background: var(--soft); border: 1px solid var(--line); border-radius: var(--reference-radius-md); padding: 6px 7px 6px 17px; min-width: 0 }
+.command code { font: 14px/1.6 "Geist Mono", monospace; white-space: nowrap; overflow-x: auto; flex: 1; min-width: 0; text-align: left; scrollbar-width: thin }
+.prompt { color: var(--muted); margin-right: 10px; user-select: none }
+.copy-button { border: 1px solid var(--line); border-radius: var(--reference-radius-sm); padding: 8px 11px; background: var(--reference-white); color: var(--ink); font-size: 13px; line-height: 1.2; white-space: nowrap; display: inline-flex; gap: 6px; align-items: center }
+.copy-button:hover { border-color: var(--violet); color: var(--violet) }
+.copy-button svg { width: 14px; height: 14px }
+.specimen-stage { padding: calc(var(--reference-spacing-base) * 22) calc(var(--reference-spacing-base) * 6) calc(var(--reference-spacing-base) * 20); background: var(--reference-midnight); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line) }
+.specimen { width: min(920px, 100%); margin: auto; border: 1px solid var(--reference-nickel); border-radius: var(--reference-radius-lg); overflow: hidden; text-align: left; background: var(--reference-midnight) }
+.specimen-body { display: grid; grid-template-columns: 48px minmax(0, 1fr); background: var(--reference-midnight); color: var(--reference-white) }
+.specimen-body pre, .code-block pre { overflow-x: auto; font: 14px/1.8 "Geist Mono", monospace; tab-size: 2; white-space: pre; min-width: 0 }
+.specimen-body pre { padding: 24px 32px 32px 16px; scrollbar-width: thin }
+.specimen-body code { font: inherit }
+.specimen-body pre:focus-visible { outline: 2px solid var(--reference-aqua); outline-offset: -2px }
+.specimen-gutter { padding: 24px 12px 32px 0; border-right: 1px solid var(--reference-nickel); color: color-mix(in srgb, var(--reference-white) 48%, var(--reference-midnight)); font: 14px/1.8 "Geist Mono", monospace; text-align: right; white-space: pre; user-select: none }
+.token-string { color: #85531d }
+.token-keyword { color: #9c286f }
+.token-tag { color: #5641a7 }
+.token-attribute { color: #365b86 }
+.specimen .token-string { color: #c6f3dc }
+.specimen .token-keyword { color: var(--reference-vite) }
+.specimen .token-tag { color: var(--reference-aqua) }
+.specimen .token-attribute { color: #d7caff }
+.landing-section { border-bottom: 1px solid var(--line); scroll-margin-top: 64px }
+.section-inner { max-width: 1136px; margin: auto; padding: calc(var(--reference-spacing-base) * 16) calc(var(--reference-spacing-base) * 8) }
+.landing .section-title { font-size: 36px; font-weight: 600; line-height: 1.17; margin-bottom: 20px }
+.landing .section-intro { max-width: 720px; color: var(--muted); font-size: 17px; margin-bottom: 28px }
+.two-column { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; align-items: start }
+.two-column > * { min-width: 0 }
+.prose p { font-size: 16px; margin: 0 0 17px; max-width: 69ch }
+.prose a { color: var(--violet); text-decoration: underline; text-underline-offset: 3px }
+.section-actions { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 24px; font-size: 15px; font-weight: 500 }
+.section-actions a:not(.site-button) { color: var(--violet) }
+.code-block { border: 1px solid var(--line); border-radius: var(--reference-radius-md); background: var(--soft); margin: 19px 0 24px; min-width: 0; overflow: hidden }
+.code-block-header { padding: 8px 12px 8px 18px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--line); font: 12px/1.4 "Geist Mono", monospace; color: var(--muted) }
+.code-block-header .copy-button { font-family: Geist, Arial, sans-serif }
+.code-block pre { padding: 18px; scrollbar-width: thin }
+.installation-section { background: var(--reference-beige) }
+.installation-section .command, .installation-section .code-block { background: var(--reference-white) }
+.installation-section .code-block { margin-top: 0; margin-bottom: 16px }
+.installation-section .command + .code-block { margin-top: 16px }
+.installation-section .section-intro:last-child { margin-bottom: 0 }
+.list-rows { border-top: 1px solid var(--line) }
+.list-row { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 25px; border-bottom: 1px solid var(--line); padding: 23px 0 }
+.list-row h3 { font-size: 18px; font-weight: 600; line-height: 1.35; min-width: 0; overflow-wrap: anywhere }
+.list-row p { font-size: 15px; color: var(--muted); max-width: 650px }
+.template-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
+.template-card { display: flex; flex-direction: column; min-width: 0; min-height: 206px; padding: 24px; border: 1px solid var(--line); border-radius: var(--reference-radius-lg); background: var(--reference-framework-tile); color: var(--ink) }
+.template-card:hover { border-color: color-mix(in srgb, var(--line) 55%, var(--reference-nickel)); color: var(--ink); box-shadow: var(--reference-shadow-pop) }
+.template-card:focus-visible { outline-offset: 3px }
+.template-card-header { display: flex; align-items: center; gap: 9px; min-width: 0 }
+.template-avatar { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; flex: none }
+.template-card h3 { min-width: 0; font-size: 15px; font-weight: 600; line-height: 1.35; overflow-wrap: anywhere; letter-spacing: -.02em }
+.template-github { margin-left: auto; display: flex; color: var(--muted); flex: none }
+.template-github svg { width: 18px; height: 18px }
+.template-kind { font-size: 12px; color: var(--muted); margin: 8px 0 0 33px }
+.template-card p { margin-top: 17px; font-size: 15px; line-height: 1.55; color: var(--ink) }
+.template-meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; padding-top: 24px; color: var(--muted); font-size: 13px; line-height: 1.4; font-variant-numeric: tabular-nums }
+.template-language, .template-stars { display: inline-flex; align-items: center; gap: 6px; min-width: 0 }
+.template-stars svg { width: 15px; height: 15px }
+.language-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--reference-vite); flex: none }
+.ecosystem-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line) }
+.ecosystem-item { padding: 24px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-height: 136px }
+.ecosystem-item h3 { font-size: 18px; margin-bottom: 8px }
+.ecosystem-item p { font-size: 15px; color: var(--muted) }
+.editors-section { text-align: center }
+.editor-list { display: flex; align-items: center; justify-content: center; gap: clamp(6px, 2vw, 24px); margin: 32px auto }
+.editor-logo { display: grid; place-items: center; width: clamp(36px, 11vw, 64px); height: clamp(36px, 11vw, 64px); border-radius: var(--reference-radius-xl); background: var(--reference-framework-tile); flex: none }
+.editor-list img { display: block; width: clamp(26px, 7.5vw, 40px); height: clamp(26px, 7.5vw, 40px); object-fit: contain }
+.editor-copy { max-width: 750px; margin: auto; font-size: 16px }
+.editor-copy p { margin: 0 auto 17px }
+.editor-copy > a { display: inline-block; margin-top: 4px }
+.runtime-section { background: var(--reference-slate); color: var(--reference-white); border-color: var(--reference-nickel) }
+.runtime-section .section-intro, .runtime-section .list-row p { color: color-mix(in srgb, var(--reference-white) 78%, var(--reference-vite)) }
+.runtime-section .list-rows, .runtime-section .list-row { border-color: var(--reference-nickel) }
+.runtime-section .section-actions a, .runtime-section .text-link { color: var(--reference-vite) }
+.runtime-section .section-actions a:hover, .runtime-section .text-link:hover { color: var(--reference-aqua) }
+.runtime-section a:focus-visible { outline-color: var(--reference-aqua) }
+.featured-projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin: 32px 0 48px }
+.featured-project { min-width: 0 }
+.project-preview { display: block; aspect-ratio: 16/10; overflow: hidden; border: 1px solid var(--line); border-radius: var(--reference-radius-md); background: var(--soft) }
+.project-preview img { width: 100%; height: 100%; object-fit: cover; display: block }
+.project-preview:hover { border-color: var(--reference-vite) }
+.featured-project-info { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 14px }
+.project-site { min-width: 0; font-size: 16px; font-weight: 600; overflow-wrap: anywhere; display: inline-flex; align-items: center; gap: 4px }
+.project-site svg { width: 14px; height: 14px }
+.project-repo { display: inline-flex; align-items: center; gap: 7px; flex: none; color: var(--muted); font-size: 13px }
+.project-repo svg, .project-row svg { width: 18px; height: 18px }
+.project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 45px; border-top: 1px solid var(--line) }
+.project-row { border-bottom: 1px solid var(--line); padding: 16px 0; display: flex; justify-content: space-between; align-items: center; gap: 15px; font-size: 16px; font-weight: 500; overflow-wrap: anywhere }
+.project-row svg { color: var(--muted) }
+.project-row:hover svg { color: var(--violet) }
+.playground-section { background: #000; color: var(--reference-white); text-align: center }
+.playground-panel { padding-top: 80px; padding-bottom: 80px }
+.playground-panel p { max-width: 650px; margin: auto; color: color-mix(in srgb, var(--reference-white) 80%, #000); font-size: 17px }
+.playground-panel .section-actions { justify-content: center }
+.playground-panel .site-button-primary { color: var(--reference-primary); background: var(--reference-white); border-color: var(--reference-white) }
+.playground-panel .site-button-primary:hover { color: var(--reference-primary); background: var(--reference-framework-tile); border-color: var(--reference-framework-tile) }
+.playground-panel a:focus-visible { outline-color: var(--reference-aqua) }
+.closing-section { background: var(--reference-white); color: var(--ink); text-align: center; border-bottom: 0 }
+.join-panel { padding-top: 80px; padding-bottom: 80px }
+.join-panel p { max-width: 650px; margin: auto; font-size: 17px; color: var(--muted) }
+.join-panel .section-actions { justify-content: center; gap: 12px }
+.join-panel .site-button-primary img { filter: invert(1) }
+.footer { margin-top: 0; border-top: 1px solid var(--line); background: var(--reference-slate); color: var(--reference-white) }
+.footer-inner { max-width: 1160px; margin: auto; padding: 45px 32px 65px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px }
+.footer-column h2 { font-size: 14px; letter-spacing: 0; margin-bottom: 16px }
+.footer-column a { display: block; color: color-mix(in srgb, var(--reference-white) 78%, var(--reference-vite)); font-size: 14px; margin: 11px 0 }
+.footer-column a:hover { color: var(--reference-aqua) }
+.footer a:focus-visible { outline-color: var(--reference-aqua) }
+.docs-shell { display: grid; grid-template-columns: 272px minmax(0, 912px) minmax(170px, 1fr); max-width: 1440px; margin: auto; min-height: calc(100vh - 64px) }
+.docs-sidebar { border-right: 1px solid var(--line); padding: 28px 32px; align-self: stretch }
+.docs-sidebar-inner { position: sticky; top: 24px }
+.docs-nav-group { margin-bottom: 27px }
+.docs-nav-group h2 { font-size: 14px; letter-spacing: 0; font-weight: 600; margin-bottom: 13px }
+.docs-nav-group a { display: block; font-size: 14px; line-height: 1.5; padding: 7px 0; color: var(--muted) }
+.docs-nav-group a:hover, .docs-nav-group a[aria-current=page] { color: var(--violet) }
+.docs-article { padding: 51px 0 90px; margin-inline: clamp(40px, 7.8vw, 112px); min-width: 0 }
+.docs-article h1 { font-size: 36px; line-height: 1.2; font-weight: 600; margin-bottom: 19px }
+.docs-article .lead { font-size: 17px; line-height: 1.65; margin-bottom: 30px }
+.docs-article h2 { font-size: 25px; line-height: 1.3; font-weight: 600; margin: 43px 0 15px; scroll-margin-top: 30px }
+.docs-article h3 { font-size: 19px; margin: 27px 0 11px; scroll-margin-top: 30px }
+.docs-article p, .docs-article li { font-size: 16px; line-height: 1.7; margin-bottom: 16px }
+.docs-article ul { padding-left: 22px }
+.docs-article :not(pre, .command)>code, .article-body :not(pre, .command)>code, .prose :not(pre, .command)>code { font: 13px/1.4 "Geist Mono", monospace; background: #f1f0f4; border-radius: 3px; padding: 2px 5px }
+.docs-article .command { margin: 20px 0 26px }
+.docs-article .code-block { margin: 22px 0 26px }
+.docs-article .text-link { color: var(--violet) }
+.docs-article .template-grid { grid-template-columns: minmax(0, 1fr) }
+.docs-article .template-card h3 { font-size: 15px; margin: 0 }
+.docs-article .template-card p { font-size: 15px; line-height: 1.55; margin: 17px 0 0 }
+.docs-next { border-top: 1px solid var(--line); margin-top: 55px; padding-top: 22px; display: flex; justify-content: space-between; gap: 20px; color: var(--violet); font-size: 15px; font-weight: 600 }
+.docs-next span { color: var(--muted); font-weight: 400 }
+.docs-toc { border-left: 1px solid var(--line); padding: 30px 25px 20px 32px }
+.docs-toc-inner { position: sticky; top: 30px }
+.docs-toc h2 { color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 16px }
+.docs-toc a { display: block; font-size: 13px; line-height: 1.5; color: var(--muted); padding: 6px 0 }
+.docs-toc a:hover { color: var(--violet) }
+.blog-shell { max-width: 1440px; margin: auto; min-height: 70vh; border-left: 1px solid var(--line); border-right: 1px solid var(--line) }
+.blog-inner { max-width: 880px; margin: auto; padding: 77px 32px 110px }
+.blog-shell h1 { font-size: 48px; line-height: 1.14; margin: 0 0 19px }
+.blog-intro { font-size: 18px; color: var(--muted); margin: 0 0 34px; max-width: 630px }
+.article-row { border-top: 1px solid var(--line); padding: 27px 0 30px }
+.article-row:last-child { border-bottom: 1px solid var(--line) }
+.article-row h2 { font-size: 28px; line-height: 1.3; margin-bottom: 9px }
+.article-row h2 a { color: var(--ink) }
+.article-row h2 a:hover { color: var(--violet) }
+.article-summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 8px 20px; min-width: 0 }
+.article-description-group { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; min-width: 0 }
+.article-description { min-width: 0; color: var(--muted); font-size: 15px }
+.article-summary time, .article-author { font-size: 13px; white-space: nowrap; font-variant-numeric: tabular-nums }
+.article-summary time { color: var(--muted) }
+.article-author { justify-self: end; color: var(--ink); text-decoration: underline; text-underline-offset: 3px }
+.article-author:hover { color: var(--violet) }
+.article .back-link { display: inline-block; margin-bottom: 42px; font-size: 14px; color: var(--violet) }
+.article h1 { max-width: 740px }
+.article .article-description { font-size: 20px; line-height: 1.55 }
+.article .article-summary { border-bottom: 1px solid var(--line); padding-bottom: 24px; margin-bottom: 36px }
+.article-body p { font-size: 17px; line-height: 1.8; margin-bottom: 22px }
+.article-body .code-block { margin: 28px 0 }
+.article-bottom { border-top: 1px solid var(--line); padding-top: 26px; margin-top: 60px; display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap }
+.article-bottom a { color: var(--violet) }
+@media (max-width: 1100px) {
+  .template-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .docs-shell { grid-template-columns: 232px minmax(0, 1fr) }
+  .docs-article { max-width: 688px; margin: 0 auto; padding: 48px 36px 80px; width: 100% }
+  .docs-toc { display: none }
+  .docs-sidebar { padding-left: 25px }
+  .footer-inner { grid-template-columns: repeat(4, minmax(0, 1fr)) }
+}
+@media (max-width: 720px) {
+  .template-grid { grid-template-columns: minmax(0, 1fr) }
+  .site-header { height: auto; min-height: 64px }
+  .header-inner { padding: 0 20px; gap: 16px; min-height: 64px }
+  .brand { font-size: 25px }
+  .main-nav { gap: 16px }
+  .main-nav a { font-size: 14px }
+  .header-actions { gap: 4px }
+  .hero { padding: 64px 20px 40px }
+  .hero h1 { font-size: clamp(44px, 10vw, 64px) }
+  .hero .lead { font-size: 17px }
+  .specimen-stage { padding: 48px 20px }
+  .section-inner { padding: 48px 20px }
+  .landing .section-title { font-size: 31px }
+  .two-column { grid-template-columns: minmax(0, 1fr); gap: 24px }
+  .landing .two-column .command, .landing .two-column .code-block { width: 100%; max-width: 100% }
+  .landing .two-column .code-block pre { max-width: 100% }
+  .ecosystem-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .list-row { grid-template-columns: 1fr; gap: 6px }
+  .featured-projects { grid-template-columns: 1fr; gap: 34px }
+  .project-grid { grid-template-columns: 1fr }
+  .docs-shell { display: block }
+  .docs-sidebar { border-right: 0; border-bottom: 1px solid var(--line); padding: 10px 20px }
+  .docs-sidebar-inner { display: flex; gap: 25px; overflow-x: auto; position: static; white-space: nowrap; scrollbar-width: thin }
+  .docs-nav-group { display: flex; gap: 15px; align-items: center; margin: 0; flex: none }
+  .docs-nav-group h2 { margin: 0 }
+  .docs-nav-group a { display: inline-block }
+  .docs-article { padding: 42px 20px 70px }
+  .docs-article h1 { font-size: 34px }
+  .blog-shell { border: 0 }
+  .blog-inner { padding: 55px 20px 80px }
+  .article-summary { grid-template-columns: minmax(0, 1fr) auto }
+  .article-description-group { display: contents }
+  .article-description { grid-column: 1 / -1 }
+  .footer-inner { padding: 35px 20px 50px; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px }
+}
+@media (max-width: 480px) {
+  .header-inner { padding: 0 12px; gap: 8px }
+  .main-nav { gap: 10px }
+  .main-nav a { font-size: 13px }
+  .hero h1 { font-size: clamp(42px, 11vw, 52px) }
+  .specimen-body pre { padding: 20px 20px 20px 16px; font-size: 12px }
+  .specimen-gutter { padding-top: 20px; padding-bottom: 20px; font-size: 12px }
+  .ecosystem-grid { grid-template-columns: 1fr }
+  .ecosystem-item { min-height: 0 }
+  .footer-inner { gap: 28px 18px }
+  .docs-nav-group h2 { display: none }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
