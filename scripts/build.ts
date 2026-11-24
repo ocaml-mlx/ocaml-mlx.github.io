@@ -1,4 +1,5 @@
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { pages } from '../site.js';
@@ -47,7 +48,7 @@ function validatePages(value: unknown): asserts value is Page[] {
   if (!paths.has('/') || !paths.has('/docs/') || !paths.has('/blog/')) throw new Error('Missing a required section root');
 }
 
-function render(template: string, page: Page, is404 = false): string {
+function render(template: string, page: Page, assets: { app: string; style: string }, is404 = false): string {
   const canonical = `${origin}${page.path}`;
   const openGraph = is404 ? '' : [
     `<meta property="og:title" content="${escapeHtml(page.title)}" />`,
@@ -65,23 +66,48 @@ function render(template: string, page: Page, is404 = false): string {
     docsActive: page.section === 'docs' ? ' aria-current="page"' : '',
     blogActive: page.section === 'blog' ? ' aria-current="page"' : '',
     content: page.html,
+    appAsset: assets.app,
+    styleAsset: assets.style,
   };
-  return template.replace(/\{\{(title|description|canonical|openGraph|robots|docsActive|blogActive|content)\}\}/g, (_, field: string) => fields[field] ?? '');
+  return template.replace(/\{\{(title|description|canonical|openGraph|robots|docsActive|blogActive|content|appAsset|styleAsset)\}\}/g, (_, field: string) => fields[field] ?? '');
 }
 
 async function build(): Promise<void> {
   validatePages(pages);
   const template = await readFile(resolve(root, 'index.html'), 'utf8');
+  const routesSource = await readFile(resolve(root, 'routes.js'), 'utf8');
+  const appSource = await readFile(resolve(root, 'app.js'), 'utf8');
+  const styleSource = await readFile(resolve(root, 'style.css'), 'utf8');
+  const fingerprint = (name: string, extension: string, source: string): string =>
+    `/${name}.${createHash('sha256').update(source).digest('hex').slice(0, 12)}.${extension}`;
+  const routesAsset = fingerprint('routes', 'js', routesSource);
+  if (!appSource.includes('from "./routes.js"')) throw new Error('Missing client route import');
+  const versionedApp = appSource.replace('from "./routes.js"', `from "${routesAsset}"`);
+  const assets = {
+    app: fingerprint('app', 'js', versionedApp),
+    style: fingerprint('style', 'css', styleSource),
+  };
   await rm(dist, { recursive: true, force: true });
   await mkdir(dist, { recursive: true });
   await cp(resolve(root, 'assets'), resolve(dist, 'assets'), { recursive: true });
-  await cp(resolve(root, 'app.js'), resolve(dist, 'app.js'));
+  await writeFile(resolve(dist, `.${routesAsset}`), routesSource);
+  await writeFile(resolve(dist, `.${assets.app}`), versionedApp);
+  await writeFile(resolve(dist, `.${assets.style}`), styleSource);
+  await writeFile(resolve(dist, 'app.js'), `const main = document.querySelector("#content");
+if (main && main.childElementCount === 0) {
+  const url = new URL(location.href);
+  url.searchParams.set("_mlx", "${assets.app.slice(5, 17)}");
+  if (url.href !== location.href) location.replace(url.href);
+} else {
+  await import("${assets.app}");
+}
+`);
   await cp(resolve(root, 'routes.js'), resolve(dist, 'routes.js'));
   await cp(resolve(root, 'style.css'), resolve(dist, 'style.css'));
   for (const page of pages) {
     const directory = resolve(dist, `.${page.path}`);
     await mkdir(directory, { recursive: true });
-    await writeFile(resolve(directory, 'index.html'), render(template, page));
+    await writeFile(resolve(directory, 'index.html'), render(template, page, assets));
   }
   const missing: Page = {
     path: '/',
@@ -91,7 +117,7 @@ async function build(): Promise<void> {
     html: '<div class="landing"><section class="hero" aria-labelledby="not-found-title"><h1 id="not-found-title">Page not found</h1><p class="lead">This page does not exist.</p><div class="hero-actions"><a class="site-button site-button-primary" href="/">Back to mlx</a><a class="site-button site-button-secondary" href="/docs/">Read the documentation</a></div></section></div>',
     type: 'website',
   };
-  await writeFile(resolve(dist, '404.html'), render(template, missing, true));
+  await writeFile(resolve(dist, '404.html'), render(template, missing, assets, true));
   const sitemap = pages.map(page => `  <url><loc>${escapeHtml(`${origin}${page.path}`)}</loc></url>`).join('\n');
   await writeFile(resolve(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemap}\n</urlset>\n`);
   await writeFile(resolve(dist, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${origin}/sitemap.xml\n`);

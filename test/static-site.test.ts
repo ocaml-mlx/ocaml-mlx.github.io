@@ -74,6 +74,20 @@ test("documentation and article content is present without running the browser s
   }
 });
 
+test("pages use versioned client assets instead of a cached query-page renderer", () => {
+  const html = htmlAt("/docs/how-it-works/");
+  const script = capture(html, /<script type="module" src="([^"]+)"/);
+  assert.match(script, /^\/app\.[a-f0-9]{12}\.js$/);
+  assert.match(html, /href="\/style\.[a-f0-9]{12}\.css"/);
+  const client = readFileSync(join(output, script), "utf8");
+  const routesImport = capture(client, /from "(\/routes\.[a-f0-9]{12}\.js)"/);
+  assert.ok(existsSync(join(output, routesImport)));
+  assert.doesNotMatch(client, /main\.innerHTML\s*=/);
+  const oldEntry = readFileSync(join(output, "app.js"), "utf8");
+  assert.ok(oldEntry.includes(script));
+  assert.match(oldEntry, /main\.childElementCount === 0/);
+});
+
 test("every internal link and asset resolves, including cross-page fragments", () => {
   for (const [path] of routes) {
     const html = htmlAt(path);
