@@ -4,10 +4,10 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "opam exec -- dune exec --root . site/dev.exe",
+    "dev": "opam exec -- dune exec --root . site/dev.exe --",
     "start": "npm run dev",
-    "build": "opam exec -- dune exec --root . site/build.exe",
-    "preview": "opam exec -- dune exec --root . site/preview.exe",
+    "build": "opam exec -- dune exec --root . site/build.exe --",
+    "preview": "opam exec -- dune exec --root . site/preview.exe --",
     "check": "opam exec -- dune build @all @fmt @runtest",
     "test": "opam exec -- dune build @checks @runtest site/build.exe site/preview.exe && opam exec -- node _build/default/checks/output/checks/build_test.js && opam exec -- node _build/default/checks/output/checks/preview_test.js && node _build/default/checks/output/checks/parity_test.js",
     "test:parity": "opam exec -- dune build @checks && node _build/default/checks/output/checks/parity.js"
