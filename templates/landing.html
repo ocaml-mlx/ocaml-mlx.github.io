@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.svg">
+<meta name="generator" content="YOCaml">
+<meta name="description" content="Bring JSX into OCaml with minimal parser and tooling changes.">
+<meta name="theme-color" content="#07090f">
+<script>{{ theme_script | safe }}</script>
+<title>mlx - JSX for OCaml</title>
+<link rel="stylesheet" href="/css/authored-landing.css">
+<link rel="stylesheet" href="/css/theme-select.css">
+<script type="module" src="/assets/prefetch.js"></script>
+</head>
+<body>
+<div class="page-shell">
+<header class="site-header">
+<a class="wordmark" href="/" aria-label="mlx home"><span class="wordmark__mark">mlx</span> <span class="wordmark__name">OCaml JSX</span></a>
+<nav class="top-nav" aria-label="Primary"><a href="/docs/">Docs</a><a href="/docs/installation/">Setup</a><a href="/docs/formal-syntax/">Syntax</a><a href="/changelog/">Changelog</a><a href="https://github.com/ocaml-mlx/mlx">GitHub</a></nav>
+<label class="mlx-theme-select astro-e3sgix4a"><span class="mlx-theme-select__label astro-e3sgix4a">Color theme</span><select data-mlx-theme-select class="astro-e3sgix4a"><option value="auto" class="astro-e3sgix4a">System</option><option value="light" class="astro-e3sgix4a">Light</option><option value="dark" class="astro-e3sgix4a">Dark</option></select><svg aria-hidden="true" viewBox="0 0 16 16" fill="none" class="astro-e3sgix4a"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="astro-e3sgix4a"/></svg></label>
+</header>
+<main>
+<section class="hero" id="top">
+<div class="hero__copy">
+<p class="eyebrow">for practical OCaml teams</p>
+<h1>JSX in OCaml, without breaking everything around it.</h1>
+<p class="lede">mlx adds JSX syntax with a minimal parser and tooling delta, so your project keeps the same ecosystem shape while authoring UI in a cleaner form.</p>
+<div class="hero__actions"><a class="button button--primary" href="/docs/installation/">Start with setup</a> <a class="button button--secondary" href="/docs/formal-syntax/">Read syntax reference</a></div>
+<ul class="signal-list" aria-label="mlx highlights"><li>Works with Melange and js_of_ocaml workflows</li> <li>Stays close to normal dune, merlin, and formatter paths</li> <li>Designed as syntax sugar, not a parallel runtime universe</li></ul>
+</div>
+<div class="hero__stack">
+<article class="command-block" aria-label="Installation command"><p>Install</p> <code>opam install mlx</code> <span>Optional: ocamlmerlin-mlx, ocamlformat-mlx</span></article>
+<article class="code-window"><div class="code-window__bar"><span>.mlx authoring</span> <span>editor</span></div> <pre><code>{{ landing.hero_code | escape }}</code></pre></article>
+</div>
+</section>
+<section class="routes" aria-label="Where to go next">
+<article class="route-card route-card--primary"><p class="eyebrow">Landing intent</p> <h2>Promote and orient.</h2> <p>If you are evaluating mlx, start with installation and the ecosystem map. You should understand value in minutes.</p> <a href="/docs/installation/">Go to installation</a></article>
+<article class="route-card"><p class="eyebrow">Docs intent</p> <h2>Setup fast, then go deep.</h2> <p>Docs are split on purpose: one path for getting a project running quickly, another for detailed syntax and lowering behavior.</p> <div class="route-links"><a href="/docs/installation/">Fast setup page</a> <a href="/docs/formal-syntax/">Deep syntax page</a></div></article>
+</section>
+<section class="section section--syntax" id="jsx">
+<div class="section__intro"><p class="eyebrow">what changes</p> <h2>A cleaner surface. Same OCaml underneath.</h2> <p>mlx gives a JSX-shaped authoring layer, while downstream PPX/runtime decisions stay where they already belong.</p></div>
+<div class="syntax-grid">
+<article class="code-window code-window--faint"><div class="code-window__bar"><span>without mlx</span> <span>lowered call form</span></div> <pre><code>{{ landing.syntax_before | escape }}</code></pre></article>
+<article class="code-window"><div class="code-window__bar"><span>with mlx</span> <span>authoring form</span></div> <pre><code>{{ landing.syntax_after | escape }}</code></pre></article>
+</div>
+</section>
+<section class="section section--ecosystem" id="ecosystem">
+<div class="section__intro"><p class="eyebrow">ecosystem fit</p> <h2>Designed to plug in, not take over.</h2> <p>The goal is continuity. Existing OCaml tooling remains the center of gravity, and mlx stays intentionally small.</p></div>
+<div class="ecosystem-grid">
+{% for item in landing.ecosystem %}<article class="note-card"><h3>{{ item.title | escape }}</h3> <p>{{ item.body | escape }}</p></article> {% endfor %}
+<article class="note-card note-card--code"><h3>`dune-project` dialect</h3> <p>Drop this in and keep the rest of your workflow moving.</p> <pre><code>{{ landing.dune_snippet | escape }}</code></pre></article>
+</div></section>
+<section class="section section--links" id="paths"><div class="stack-columns">
+<div class="column-block"><p class="eyebrow">editor paths</p> <h2>Use the editor you already trust.</h2><div class="link-stack">
+{% for editor in landing.editors %}<a class="link-row" href="{{ editor.href | escape }}"><strong>{{ editor.name | escape }}</strong> <span>{{ editor.note | escape }}</span></a> {% endfor %}
+<a class="link-row" href="https://github.com/ocaml-mlx/mlx/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen"><strong>Missing your editor?</strong> <span>Open an issue with your integration details.</span></a>
+</div></div>
+<div class="column-block"><p class="eyebrow">guide tracks</p> <h2>Choose your runtime path.</h2><div class="guide-stack">
+{% for guide in landing.guides %}<a class="guide-row" href="{{ guide.href | escape }}"><h3>{{ guide.title | escape }}</h3> <p>{{ guide.body | escape }}</p> <span>Read guide</span></a> {% endfor %}
+</div></div>
+</div></section>
+<section class="section section--proof" id="ecosystem-links">
+<div class="section__intro"><p class="eyebrow">proof in code</p> <h2>Start from templates, then inspect live projects.</h2></div>
+<div class="proof-grid"><article class="list-panel"><h3>Templates</h3><ul>
+{% for template in landing.templates %}<li><a href="{{ template.href | escape }}">{{ template.name | escape }}</a> <p>{{ template.description | escape }}</p></li> {% endfor %}
+</ul></article><article class="list-panel"><h3>Projects using mlx</h3><ul>
+{% for project in landing.projects %}<li><a href="{{ project.href | escape }}">{{ project.name | escape }}</a></li> {% endfor %}
+</ul></article></div>
+</section>
+</main>
+<footer class="site-footer"><p>mlx is a syntax extension for OCaml teams that want JSX without ecosystem drift.</p> <nav aria-label="Footer"><a href="https://github.com/ocaml-mlx/mlx">GitHub repo</a> <a href="https://github.com/ocaml-mlx">GitHub org</a> <a href="/docs/installation/">Installation</a> <a href="/docs/formal-syntax/">Formal syntax</a></nav></footer>
+</div>
+</body></html>

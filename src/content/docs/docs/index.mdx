@@ -1,0 +1,61 @@
+---
+title: mlx documentation
+description: Install mlx, wire it into dune, and choose the ecosystem path that fits your OCaml project.
+slug: docs
+template: splash
+hero:
+  title: mlx documentation
+  tagline: JSX for OCaml, documented like a manual instead of a product funnel.
+  actions:
+    - text: Installation
+      link: /docs/installation/
+      icon: right-arrow
+    - text: Formal syntax
+      link: /docs/formal-syntax/
+      icon: right-arrow
+      variant: secondary
+    - text: GitHub
+      link: https://github.com/ocaml-mlx/mlx
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+mlx adds JSX syntax to OCaml while keeping the parser and tooling story deliberately small. The docs are organized around three needs: getting the syntax wired in, understanding how it lowers, and choosing the runtime path that matches your stack.
+
+## Start here
+
+<CardGrid stagger>
+	<Card title="Installation" icon="download">
+		Set up the <code>mlx</code> dialect, add formatter support, and confirm your project builds.
+		[Read the installation guide](/docs/installation/).
+	</Card>
+	<Card title="Editors" icon="seti:vim">
+		Configure VS Code, Neovim, and tree-sitter based workflows without inventing a new editor story.
+		[Open editor setup](/docs/editors/).
+	</Card>
+	<Card title="Formal syntax" icon="code">
+		See how lowercase tags, capitalized components, fragments, children, and punning map to normal OCaml calls.
+		[Read the reference](/docs/formal-syntax/).
+	</Card>
+	<Card title="Melange + ReasonReact" icon="open-book">
+		Use mlx on the client with familiar React ergonomics.
+		[Read the guide](/docs/guides/melange-reason-react/).
+	</Card>
+	<Card title="Dream + html_of_jsx" icon="open-book">
+		Render HTML on the server with JSX-shaped authoring.
+		[Read the guide](/docs/guides/dream-html-of-jsx/).
+	</Card>
+	<Card title="TyXML" icon="open-book">
+		Use mlx as a syntax layer when typed HTML construction is still the core abstraction.
+		[Read the guide](/docs/guides/tyxml/).
+	</Card>
+</CardGrid>
+
+## What belongs where
+
+- Reach for **Installation** when you need the dialect block, formatter, merlin reader, or package names.
+- Reach for **Formal syntax** when you need to remember how JSX lowers or how children are passed.
+- Reach for **Guides** when you already know your runtime and want the shortest working path.
+- Reach for **Templates** and **Projects using mlx** when you want to start from code that already exists.

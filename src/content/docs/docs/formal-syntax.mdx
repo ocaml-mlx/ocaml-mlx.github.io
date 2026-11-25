@@ -1,0 +1,161 @@
+---
+title: Formal syntax
+description: A practical reference for how mlx lowers JSX syntax to normal OCaml calls and where runtime-specific behavior begins.
+slug: docs/formal-syntax
+---
+
+## Mental model
+
+mlx gives OCaml a JSX surface. It does **not** hard-code a UI runtime into the language.
+
+The syntax lowers to ordinary OCaml expressions marked with `[@JSX]`, and the final meaning comes from the downstream PPX or library that consumes those calls.
+
+That means:
+
+- the syntax is shared
+- the semantics are still runtime-specific
+- the parser change stays small enough to travel across the ecosystem
+
+## Capitalized tag
+
+A capitalized tag is treated like a component call.
+
+```ocaml title="authoring form"
+<Button label="Ship" />
+```
+
+Lowers to the shape of a function call with labeled arguments and a `children` position:
+
+```ocaml title="lowered form"
+([@JSX] Button(~label="Ship", ~children=[], ()))
+```
+
+Exact naming conventions can differ depending on the downstream runtime, but the key idea stays the same: a capitalized tag maps to a component-level call.
+
+## Lowercase tag
+
+A lowercase tag is treated like an element helper call.
+
+```ocaml title="authoring form"
+<div className="hero">
+  <h1>"Hello"</h1>
+  <p>"OCaml, now with JSX syntax."</p>
+</div>
+```
+
+```ocaml title="lowered form"
+([@JSX]
+  div(
+    ~className="hero",
+    ~children=[
+      ([@JSX] h1(~children=["Hello"], ())),
+      ([@JSX] p(~children=["OCaml, now with JSX syntax."], ())),
+    ],
+    (),
+  ))
+```
+
+The exact final interpretation of `div`, `h1`, `p`, and `className` depends on the runtime you are targeting.
+
+## Attributes become labeled arguments
+
+Props in JSX map naturally onto labeled OCaml arguments.
+
+```ocaml
+<Panel title="Overview" compact />
+```
+
+This reads like a function call with labels:
+
+```ocaml
+([@JSX] Panel(~title="Overview", ~compact=compact, ~children=[], ()))
+```
+
+### Punning
+
+Like Reason JSX, mlx inherits punning for attributes. When a prop name and value are the same, this is valid shorthand:
+
+```ocaml
+<Panel compact />
+```
+
+which is shorthand for:
+
+```ocaml
+<Panel compact=compact />
+```
+
+## Children
+
+Children are ordinary OCaml values passed through the `children` position.
+
+```ocaml
+<Message>
+  "ready"
+  (render_status state)
+</Message>
+```
+
+Conceptually this becomes a `children` list containing each child expression.
+
+### Literal text and expressions
+
+- literal text can appear directly as a child
+- more complex OCaml expressions should be parenthesized
+- the downstream runtime decides what type of `children` it expects
+
+In practice this means you should think in terms of normal OCaml expressions, not a special templating language.
+
+## Fragments
+
+Fragments let you group children without introducing an extra wrapper element.
+
+```ocaml
+<>
+  <h1>title</h1>
+  <p>body</p>
+</>
+```
+
+Conceptually, a fragment lowers to a grouped child value rather than a named element call.
+
+## Runtime boundary
+
+This is the part worth remembering when you switch stacks:
+
+- mlx defines the **surface syntax**
+- the downstream PPX or library defines the **runtime meaning**
+
+So:
+
+- `reason-react-ppx` decides what React-facing calls become
+- `html_of_jsx` decides how HTML rendering works
+- TyXML-related setups decide how typed HTML values are constructed
+
+The syntax is shared. The interpretation is not.
+
+## Dune-level reference
+
+The dialect wiring belongs in `dune-project`:
+
+```lisp title="dune-project"
+(dialect
+ (name mlx)
+ (implementation
+  (extension mlx)
+  (merlin_reader mlx)
+  (format
+   (run ocamlformat-mlx %{input-file}))
+  (preprocess
+   (run mlx-pp %{input-file}))))
+```
+
+That block is what makes `.mlx` a first-class file type in your build and tooling setup.
+
+## Caveats
+
+- Attribute names can still differ by runtime. HTML-first libraries may prefer forms like `class_` or `type_`.
+- The exact lowering target can vary depending on the PPX and library combination.
+- TyXML guidance is necessarily higher-level right now because public mlx-specific examples are rarer than the Melange and Dream paths.
+
+When in doubt, use this page to reason about the syntax surface, then check the guide for the specific runtime you are targeting.

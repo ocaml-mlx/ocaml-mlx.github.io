@@ -1,0 +1,72 @@
+---
+title: mlx with Melange and ReasonReact
+description: Use mlx in a client-side OCaml app with Melange, ReasonReact, and modern frontend tooling.
+slug: docs/guides/melange-reason-react
+---
+
+## When to choose this path
+
+Choose this route when you want:
+
+- client-side OCaml compiled for the browser
+- a React-style component model
+- a setup that fits naturally with existing Melange tooling and templates
+
+## Good starting points
+
+- [`andreypopp/melange-mlx-template`](https://github.com/andreypopp/melange-mlx-template)
+- [`melange-community/create-melange-app`](https://github.com/melange-community/create-melange-app)
+- [`pdelacroix/vite-plugin-melange`](https://github.com/pdelacroix/vite-plugin-melange)
+
+## Dune shape
+
+Alongside the `mlx` dialect in `dune-project`, a Melange executable or library commonly needs its usual PPX stack.
+
+```lisp title="dune"
+(melange.emit
+ (target output)
+ (libraries reason-react world)
+ (preprocess (pps melange.ppx reason-react-ppx))
+ (module_systems es6))
+```
+
+The exact libraries will change for your project, but the point is stable: mlx provides the syntax surface, while `reason-react-ppx` and Melange handle the runtime and output story.
+
+## Minimal example
+
+```ocaml title="App.mlx"
+module App = struct
+  let[@react.component] make () =
+    let items =
+      Array.map
+        (fun greeting -> <h1>(React.string greeting)</h1>)
+        [|
+          "Hello from mlx";
+          "This is React with OCaml and .mlx syntax.";
+        |]
+    in
+    React.array items
+end
+
+let () =
+  match ReactDOM.querySelector "#root" with
+  | Some root ->
+      let root = ReactDOM.Client.createRoot root in
+      ReactDOM.Client.render root <App />
+  | None -> Js.Console.error "Failed to find #root"
+```
+
+## What to keep in mind
+
+- The component model still comes from ReasonReact.
+- The bundling and browser output story still comes from Melange and your chosen build tooling.
+- mlx only changes how the JSX-shaped source is written.
+
+## Suggested workflow
+
+1. Start from a Melange template that already builds cleanly.
+2. Add the `mlx` dialect to `dune-project`.
+3. Rename or add component files as `.mlx` where it improves readability.
+4. Keep your existing Melange and React PPX setup intact.
+
+If you want the shortest path, start from the template repositories above instead of assembling the stack by hand.

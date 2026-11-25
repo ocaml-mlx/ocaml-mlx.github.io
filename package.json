@@ -1,17 +1,30 @@
 {
-  "name": "var-folders-yq-h17dmhjj3rz-6dqsnrd950gc0000gn-t-tmp-vxthlwbuvd",
+  "name": "ocaml-mlx-website",
+  "private": true,
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "dev": "node --experimental-strip-types scripts/dev.ts",
+    "start": "npm run dev",
+    "build": "node --experimental-strip-types scripts/build.ts",
+    "preview": "node --experimental-strip-types scripts/preview.ts",
+    "check": "tsc --noEmit && node --check assets/js/theme.js && opam exec -- dune build @all @fmt @runtest",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "test:parity": "node --experimental-strip-types scripts/parity.ts"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.38.1",
-    "astro": "^6.0.1",
+    "@fontsource/ibm-plex-mono": "^5.2.7",
+    "@fontsource/ibm-plex-sans": "^5.2.8",
+    "@fontsource/newsreader": "^5.2.10",
+    "marked": "^17.0.4",
     "sharp": "^0.34.2"
+  },
+  "devDependencies": {
+    "@pagefind/default-ui": "1.4.0",
+    "@types/node": "^26.6.7",
+    "esbuild": "0.28.2",
+    "pagefind": "1.4.0",
+    "playwright": "^1.65.1",
+    "typescript": "^5.9.3"
   }
 }

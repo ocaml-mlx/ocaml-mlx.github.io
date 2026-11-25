@@ -1,7 +1,10 @@
 # build output
 dist/
-# generated types
-.astro/
+dist-*/
+_build/
+_opam/
+.build/
+.*.yocaml-cache
 
 # dependencies
 node_modules/

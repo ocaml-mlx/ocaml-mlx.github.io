@@ -1,0 +1,41 @@
+{
+  "hero_code": "let view ~name ~cta () =\n  <main className=\"stack gap-6\">\n    <span className=\"eyebrow\">\"JSX for OCaml\"</span>\n    <h1>(\"Hello, \" ^ name ^ \".\")</h1>\n    <p>\"Write UI in OCaml with JSX syntax.\"</p>\n    <button data-kind=\"primary\">cta</button>\n  </main>",
+  "syntax_before": "([@JSX]\n  section(\n    ~className=\"hero\",\n    ~children=[\n      ([@JSX] h1(~children=[\"Hello\"], ())),\n      ([@JSX] p(~children=[\"OCaml, now with JSX syntax.\"], ())),\n    ],\n    (),\n  ))",
+  "syntax_after": "<section className=\"hero\">\n  <h1>\"Hello\"</h1>\n  <p>\"OCaml, now with JSX syntax.\"</p>\n</section>",
+  "dune_snippet": "(dialect\n (name mlx)\n (implementation\n  (extension mlx)\n  (merlin_reader mlx)\n  (format\n   (run ocamlformat-mlx %{input-file}))\n  (preprocess\n   (run mlx-pp %{input-file}))))",
+  "ecosystem": [
+    {"title": "ocamlformat-mlx", "body": "A tiny formatter fork so .mlx files stay first-class in the normal OCaml workflow."},
+    {"title": "ocaml-lsp", "body": "mlx files work with the existing LSP feature set out of the box through the dialect setup."},
+    {"title": "Melange and js_of_ocaml", "body": "The syntax change is small enough to travel across the ecosystem instead of splitting it."}
+  ],
+  "editors": [
+    {"name": "VS Code and forks", "href": "https://github.com/ocamllabs/vscode-ocaml-platform", "note": "Use the OCaml Platform extension in VS Code, Cursor, Windsurf, and other forks."},
+    {"name": "Neovim", "href": "https://github.com/ocaml-mlx/ocaml_mlx.nvim", "note": "Dedicated plugin support for .mlx file handling and editor ergonomics."},
+    {"name": "tree-sitter-mlx", "href": "https://github.com/ocaml-mlx/tree-sitter-mlx", "note": "Grammar support for editors and tooling that build on tree-sitter."}
+  ],
+  "guides": [
+    {"title": "Melange + ReasonReact", "href": "/docs/guides/melange-reason-react/", "body": "Client-side OCaml with familiar React ergonomics and .mlx syntax."},
+    {"title": "Dream + html_of_jsx", "href": "/docs/guides/dream-html-of-jsx/", "body": "Render HTML on the server while keeping a JSX-shaped authoring experience."},
+    {"title": "TyXML", "href": "/docs/guides/tyxml/", "body": "Use mlx as a syntax layer when you want typed HTML construction in the mix."}
+  ],
+  "templates": [
+    {"name": "melange-mlx-template", "href": "https://github.com/andreypopp/melange-mlx-template", "description": "A practical starting point for Melange apps using mlx."},
+    {"name": "create-melange-app", "href": "https://github.com/melange-community/create-melange-app", "description": "The broader Melange scaffold that mlx can slot into."},
+    {"name": "vite-plugin-melange", "href": "https://github.com/pdelacroix/vite-plugin-melange", "description": "A fast dev workflow for Melange projects that want modern frontend tooling."},
+    {"name": "Dream example", "href": "https://github.com/camlworks/dream/pull/330", "description": "A concrete Dream integration example discussed upstream."}
+  ],
+  "projects": [
+    {"name": "binary-distribution", "href": "https://github.com/ocaml-dune/binary-distribution"},
+    {"name": "fun-ocaml.com", "href": "https://github.com/FUN-OCaml/fun-ocaml.com"},
+    {"name": "brisk-reconciler", "href": "https://github.com/briskml/brisk-reconciler"},
+    {"name": "feud.ml", "href": "https://github.com/terminaldotshop/feud.ml"},
+    {"name": "monocle", "href": "https://github.com/tjdevries/monocle"},
+    {"name": "topshelf.fm", "href": "https://github.com/tjdevries/topshelf.fm"},
+    {"name": "query-json", "href": "https://github.com/davesnx/query-json"},
+    {"name": "mesa", "href": "https://github.com/leostera/mesa"},
+    {"name": "exuberant", "href": "https://github.com/KaranAhlawat/exuberant"},
+    {"name": "andreypopp.com", "href": "https://github.com/andreypopp/andreypopp.com"},
+    {"name": "mailwoman", "href": "https://github.com/SoxPopuli/mailwoman"},
+    {"name": "mosaic", "href": "https://github.com/tmattio/mosaic"}
+  ]
+}

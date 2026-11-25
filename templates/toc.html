@@ -1,0 +1,3 @@
+<ul{% if mobile %} class="isMobile astro-4ddadfhf"{% else %} class="astro-4ddadfhf"{% endif %} style="--depth:0"><li class="astro-4ddadfhf" style="--depth:0"><a href="#_top" class="astro-4ddadfhf" style="--depth:0"><span class="astro-4ddadfhf" style="--depth:0">Overview</span></a></li>
+{% for heading in headings %}{% if heading.depth > 1 and heading.depth < 4 %}<li class="astro-4ddadfhf" style="--depth:{{ heading.depth - 2 }}"><a href="#{{ heading.id | escape }}" class="astro-4ddadfhf" style="--depth:{{ heading.depth - 2 }}"><span class="astro-4ddadfhf" style="--depth:{{ heading.depth - 2 }}">{{ heading.text | escape }}</span></a></li>{% endif %}{% endfor %}
+</ul>

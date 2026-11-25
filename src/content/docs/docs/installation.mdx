@@ -1,0 +1,71 @@
+---
+title: Installation
+description: Install mlx, configure dune, and keep editor and formatter support aligned with the rest of your OCaml project.
+slug: docs/installation
+---
+
+## Install the packages
+
+Start with the syntax package:
+
+```sh
+opam install mlx
+```
+
+If you want editor and formatting support as well, install the companion packages at the same time:
+
+```sh
+opam install mlx ocamlmerlin-mlx ocamlformat-mlx
+```
+
+mlx is only the syntax layer. The runtime meaning still comes from the rest of your stack, so React, Dream, `html_of_jsx`, TyXML, and similar libraries keep their existing responsibilities.
+
+## Add the dialect to `dune-project`
+
+Add a dialect block that teaches dune how to read, preprocess, and optionally format `.mlx` files:
+
+```lisp title="dune-project"
+(dialect
+ (name mlx)
+ (implementation
+  (extension mlx)
+  (merlin_reader mlx)
+  (format
+   (run ocamlformat-mlx %{input-file}))
+  (preprocess
+   (run mlx-pp %{input-file}))))
+```
+
+This is the core integration point. Once this is in place, `.mlx` files participate in the same project shape as the rest of your OCaml source tree.
+
+## Know what this does
+
+- `extension mlx` tells dune which file extension belongs to the dialect.
+- `merlin_reader mlx` keeps editor tooling able to read the syntax.
+- `format` wires `.mlx` files into `ocamlformat-mlx`.
+- `preprocess` runs `mlx-pp` before the downstream PPX or runtime-specific layer takes over.
+
+## Confirm the rest of your stack
+
+After the dialect exists, add the runtime-specific preprocessing or libraries you already need.
+
+For example:
+
+- **Melange + ReasonReact** usually adds `melange.ppx` and `reason-react-ppx` in the library or executable stanza.
+- **Dream + html_of_jsx** typically uses `html_of_jsx.ppx` and renders the resulting value with `JSX.render`.
+- **TyXML** setups keep their typed HTML story and add the JSX lowering where appropriate.
+
+The guides cover each path in more detail.
+
+## Sanity check
+
+Create a tiny `.mlx` file and make sure dune sees it:
+
+```ocaml title="hello.mlx"
+let hello ~name () =
+  <div>
+    <h1>("Hello, " ^ name ^ "!")</h1>
+  </div>
+```
+
+Then run your normal build command. If the file is discovered, merlin understands it, and formatting works, the syntax layer is installed correctly.

@@ -1,0 +1,42 @@
+---
+title: mlx with TyXML
+description: Use mlx as a syntax layer in projects that still want typed HTML construction through TyXML.
+slug: docs/guides/tyxml
+---
+
+## When to choose this path
+
+Choose this route when you want:
+
+- TyXML's typed HTML model
+- JSX-shaped authoring in selected areas
+- a setup that stays explicit about where syntax ends and typed HTML construction begins
+
+## Reality check
+
+Public mlx + TyXML examples are rarer than the Melange and Dream paths, so this guide stays intentionally conservative. The goal is to help you reason about the shape of the integration without pretending there is a single canonical stack today.
+
+## Minimal preprocessing reference
+
+TyXML projects that opt into JSX commonly use a preprocessing step similar to:
+
+```lisp title="dune"
+(preprocess (pps tyxml-jsx))
+```
+
+In an mlx-flavored setup, the `mlx` dialect still owns the syntax layer while TyXML or `tyxml-jsx` owns the typed HTML interpretation.
+
+## What to validate in your repo
+
+- which PPX is responsible for the final TyXML-facing lowering
+- whether your attribute naming should follow TyXML helpers or a JSX compatibility layer
+- how children are typed in the specific abstractions you expose
+
+## Recommended adoption pattern
+
+1. Start from a TyXML page or component that already compiles.
+2. Introduce mlx in a narrow slice of the codebase.
+3. Confirm the PPX chain and resulting types are still what you expect.
+4. Expand only after the local pattern is stable.
+
+If your team values the stronger guarantees of typed HTML over broad JSX convenience, this gradual path is usually the right one.

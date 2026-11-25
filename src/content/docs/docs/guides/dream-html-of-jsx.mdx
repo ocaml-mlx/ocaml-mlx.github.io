@@ -1,0 +1,66 @@
+---
+title: mlx with Dream and html_of_jsx
+description: Render HTML on the server with Dream while authoring templates in mlx syntax.
+slug: docs/guides/dream-html-of-jsx
+---
+
+## When to choose this path
+
+Choose this route when you want:
+
+- server-rendered HTML
+- a Dream application
+- JSX-shaped authoring without committing to a client-side React stack
+
+The Dream integration discussion at [camlworks/dream#330](https://github.com/camlworks/dream/pull/330) is a useful reference point.
+
+## Core idea
+
+Use mlx for the authoring surface, then render the resulting JSX value through `html_of_jsx`.
+
+```lisp title="dune"
+(executable
+ (name app)
+ (libraries dream html_of_jsx)
+ (preprocess (pps html_of_jsx.ppx)))
+```
+
+## Minimal route
+
+```ocaml title="app.mlx"
+let page ~who () =
+  <html>
+    <head>
+      <title>"Greeting"</title>
+    </head>
+    <body>
+      <h1>("Good morning, " ^ who ^ "!")</h1>
+    </body>
+  </html>
+
+let () =
+  Dream.run
+  @@ Dream.logger
+  @@ Dream.router [
+    Dream.get "/" (fun _ ->
+      let html = JSX.render <page who="world" /> in
+      Dream.html html)
+  ]
+```
+
+## Notes on attributes
+
+`html_of_jsx` is HTML-first, so keep an eye on the attribute conventions expected by that library and its PPX. In some setups you will use lowercase DOM names and helper functions rather than React-style attribute names.
+
+## Why this path is appealing
+
+- good fit for HTML-first projects
+- no need to bring in a client-side UI runtime if you do not want one
+- keeps JSX as a syntax convenience instead of the center of the architecture
+
+## Suggested workflow
+
+1. Get the Dream app rendering plain HTML first.
+2. Add the `mlx` dialect.
+3. Convert the HTML-producing modules that benefit from JSX readability.
+4. Keep Dream routes and rendering boundaries explicit.

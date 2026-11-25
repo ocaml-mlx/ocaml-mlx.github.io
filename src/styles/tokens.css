@@ -1,0 +1,80 @@
+@import '@fontsource/ibm-plex-sans/400.css';
+@import '@fontsource/ibm-plex-sans/500.css';
+@import '@fontsource/ibm-plex-sans/600.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource/newsreader/400.css';
+@import '@fontsource/newsreader/500.css';
+@import '@fontsource/newsreader/600.css';
+
+:root {
+	color-scheme: dark;
+	--mlx-body-font: 'IBM Plex Sans', sans-serif;
+	--mlx-heading-font: 'IBM Plex Sans', sans-serif;
+	--mlx-display-font: 'Newsreader', serif;
+	--mlx-mono-font: 'IBM Plex Mono', monospace;
+	--mlx-ease: 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+	--mlx-radius-sm: 0.8rem;
+	--mlx-radius-md: 1.1rem;
+	--mlx-radius-lg: 1.6rem;
+	--mlx-bg: #07090f;
+	--mlx-bg-elevated: rgba(15, 19, 30, 0.86);
+	--mlx-bg-soft: rgba(20, 26, 40, 0.7);
+	--mlx-ink: #eef2ff;
+	--mlx-muted: #9ca6c4;
+	--mlx-line: rgba(157, 173, 224, 0.2);
+	--mlx-line-strong: rgba(168, 186, 242, 0.35);
+	--mlx-accent: #7da2ff;
+	--mlx-accent-strong: #5c84ff;
+	--mlx-accent-soft: rgba(125, 162, 255, 0.16);
+	--mlx-button-bg: #7da2ff;
+	--mlx-button-ink: #0e1324;
+	--mlx-good: #37d1a0;
+	--mlx-shadow: 0 28px 90px rgba(0, 0, 0, 0.45);
+	--mlx-glow: 0 0 0 1px rgba(125, 162, 255, 0.28), 0 0 60px rgba(89, 126, 255, 0.26);
+}
+
+:root[data-theme='light'] {
+	color-scheme: light;
+	--mlx-bg: #f7f9ff;
+	--mlx-bg-elevated: rgba(255, 255, 255, 0.86);
+	--mlx-bg-soft: rgba(248, 250, 255, 0.86);
+	--mlx-ink: #0e1324;
+	--mlx-muted: #5f6a88;
+	--mlx-line: rgba(78, 98, 153, 0.2);
+	--mlx-line-strong: rgba(72, 98, 178, 0.35);
+	--mlx-accent: #3a64e6;
+	--mlx-accent-strong: #294ebd;
+	--mlx-accent-soft: rgba(58, 100, 230, 0.12);
+	--mlx-good: #167455;
+	--mlx-button-bg: #3a64e6;
+	--mlx-button-ink: #ffffff;
+	--mlx-shadow: 0 24px 70px rgba(44, 57, 103, 0.16);
+	--mlx-glow: 0 0 0 1px rgba(58, 100, 230, 0.22), 0 0 30px rgba(58, 100, 230, 0.16);
+}
+
+@media (prefers-color-scheme: light) {
+	:root:not([data-theme]) {
+		color-scheme: light;
+		--mlx-bg: #f7f9ff;
+		--mlx-bg-elevated: rgba(255, 255, 255, 0.86);
+		--mlx-bg-soft: rgba(248, 250, 255, 0.86);
+		--mlx-ink: #0e1324;
+		--mlx-muted: #5f6a88;
+		--mlx-line: rgba(78, 98, 153, 0.2);
+		--mlx-line-strong: rgba(72, 98, 178, 0.35);
+		--mlx-accent: #3a64e6;
+		--mlx-accent-strong: #294ebd;
+		--mlx-accent-soft: rgba(58, 100, 230, 0.12);
+		--mlx-good: #167455;
+		--mlx-button-bg: #3a64e6;
+		--mlx-button-ink: #ffffff;
+		--mlx-shadow: 0 24px 70px rgba(44, 57, 103, 0.16);
+		--mlx-glow: 0 0 0 1px rgba(58, 100, 230, 0.22), 0 0 30px rgba(58, 100, 230, 0.16);
+	}
+}
+
+::selection {
+	background: var(--mlx-accent);
+	color: var(--mlx-bg);
+}

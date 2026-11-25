@@ -1,0 +1,25 @@
+(executable
+ (name main)
+ (libraries
+  yocaml
+  yocaml_unix
+  yocaml_jingoo
+  yaml
+  jingoo
+  cmarkit
+  ochre
+  yojson
+  str
+  unix))
+
+(rule
+ (alias runtest)
+ (deps
+  test-generator.sh
+  (glob_files ../assets/highlight/*.json)
+  content.ml
+  highlight.ml
+  markdown.ml
+  main.ml)
+ (action
+  (run sh %{dep:test-generator.sh} %{exe:main.exe} %{workspace_root})))

@@ -1,0 +1,24 @@
+opam-version: "2.0"
+name: "ocaml_mlx_website"
+version: "0.1.0"
+synopsis: "Static mlx website generator"
+maintainer: "OCaml mlx contributors"
+authors: "OCaml mlx contributors"
+homepage: "https://github.com/ocaml-mlx/website"
+bug-reports: "https://github.com/ocaml-mlx/website/issues"
+depends: [
+  "ocaml" {>= "5.2"}
+  "dune" {>= "3.16"}
+  "yocaml" {= "3.0.1"}
+  "yocaml_unix" {= "3.0.1"}
+  "yocaml_jingoo" {= "3.0.1"}
+  "yaml"
+  "jingoo"
+  "cmarkit"
+  "yojson"
+  "ochre" {= "1.1.0"}
+]
+pin-depends: [
+  ["ochre.1.1.0" "git+https://github.com/davesnx/ochre.git#c8d6ca1ce6769462f72907689cbba604f2351931"]
+]
+build: [["dune" "build" "-p" name "-j" jobs]]
