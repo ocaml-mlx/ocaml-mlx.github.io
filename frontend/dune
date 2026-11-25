@@ -1,0 +1,8 @@
+(melange.emit
+ (target output)
+ (alias browser)
+ (module_systems es6)
+ (libraries melange)
+ (preprocess
+  (pps melange.ppx))
+ (modules Browser Theme Site Prefetch))

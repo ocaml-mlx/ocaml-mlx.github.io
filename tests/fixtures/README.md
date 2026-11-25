@@ -1,7 +1,7 @@
 # Migration references
 
 `site-baseline.tar.gz` contains the original 12-page Astro/Starlight build.
-The parity runner extracts it into a content-addressed directory under `.build`.
+The OCaml parity runner extracts it into a content-addressed directory under `.build`.
 It is test input only. The YOCaml generator does not read it.
 
 `releases.json` is the public GitHub release response used for that build.

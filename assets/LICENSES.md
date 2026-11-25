@@ -13,13 +13,13 @@
   from the locked `@fontsource` packages. They use SIL Open Font License 1.1;
   full licenses are under `licenses/`.
 - `public/css/theme-select.css` and the authored CSS in `src/styles/` come from
-  this site's components. `assets/js/site.ts` maintains the prior UI behavior
-  using the Pagefind 1.4.0 official UI.
+  this site's components. `frontend/site.ml` preserves the prior UI behavior
+  through Melange bindings to the Pagefind 1.4.0 official UI.
 
 The build does not read the saved Astro baseline. Font files are bundled from
 the installed packages without changing their contents.
 
-`js/prefetch.ts` preserves the site's Astro 6.0.4 hover, focus, and slow-connection
+`frontend/prefetch.ml` preserves the site's Astro 6.0.4 hover, focus, and slow-connection
 tap behavior. The upstream license is in `licenses/astro-MIT.txt`.
 
 The docs-home `code` icon uses the Wikimedia Commons Codicons code SVG,

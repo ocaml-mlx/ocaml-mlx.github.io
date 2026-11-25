@@ -1,0 +1,48 @@
+(melange.emit
+ (target output)
+ (alias checks)
+ (module_systems es6)
+ (libraries melange)
+ (preprocess
+  (pps melange.ppx))
+ (modules
+  Node
+  Baseline
+  Browser_check
+  Blocked_storage
+  Parity
+  Parity_test
+  Preview_test
+  Build_test))
+
+(rule
+ (target browser-helper.js)
+ (deps output/checks/browser_check.js)
+ (action
+  (run
+   npx
+   --no-install
+   esbuild
+   %{dep:output/checks/browser_check.js}
+   --bundle
+   --platform=browser
+   --format=iife
+   --outfile=%{target})))
+
+(rule
+ (target blocked-storage.js)
+ (deps output/checks/blocked_storage.js)
+ (action
+  (run
+   npx
+   --no-install
+   esbuild
+   %{dep:output/checks/blocked_storage.js}
+   --bundle
+   --platform=browser
+   --format=iife
+   --outfile=%{target})))
+
+(alias
+ (name checks)
+ (deps browser-helper.js blocked-storage.js))

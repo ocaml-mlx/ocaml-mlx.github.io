@@ -352,12 +352,11 @@ let all_sources filenames =
     (T.pure []) filenames
   |> T.map List.rev
 
-let run ~output ~releases:releases_file =
+let run ~output ~releases:releases_file ~theme:theme_file =
   let source = "src/content/docs/docs" in
   let docs = all_docs source in
   let source_files = List.map (fun doc -> doc.Content.source) docs in
   let highlight = Highlight.load "assets/highlight" in
-  let theme_file = "assets/js/theme.js" in
   if not (Sys.file_exists theme_file) then
     failwith ("required asset missing: " ^ theme_file);
   let theme_task = source_task theme_file in
@@ -511,15 +510,17 @@ let run ~output ~releases:releases_file =
 let () =
   let output = ref "" in
   let releases = ref "" in
+  let theme = ref "" in
   let options =
     [
       ("--output", Arg.Set_string output, "Output directory");
       ("--releases", Arg.Set_string releases, "Validated release JSON");
+      ("--theme", Arg.Set_string theme, "Compiled synchronous theme script");
     ]
   in
   Arg.parse options
     (fun value -> raise (Arg.Bad ("unexpected argument " ^ value)))
-    "site/main.exe --output DIR --releases FILE";
-  if !output = "" || !releases = "" then
-    failwith "usage: site/main.exe --output DIR --releases FILE";
-  run ~output:!output ~releases:!releases
+    "site/main.exe --output DIR --releases FILE --theme FILE";
+  if !output = "" || !releases = "" || !theme = "" then
+    failwith "usage: site/main.exe --output DIR --releases FILE --theme FILE";
+  run ~output:!output ~releases:!releases ~theme:!theme

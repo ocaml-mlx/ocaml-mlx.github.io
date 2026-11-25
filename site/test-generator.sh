@@ -4,10 +4,10 @@ generator=$(realpath "$1")
 root=$(realpath "$2")
 scratch=$(mktemp -d "${TMPDIR:-/tmp}/mlx-generator.XXXXXX")
 trap 'rm -rf "$scratch"' EXIT
-mkdir -p "$scratch/src/content/docs/docs" "$scratch/assets/js" "$scratch/templates" "$scratch/site"
+mkdir -p "$scratch/src/content/docs/docs" "$scratch/assets" "$scratch/templates" "$scratch/site"
 ln -s "$root/assets/highlight" "$scratch/assets/highlight"
 printf '{}\n' > "$scratch/assets/landing.json"
-: > "$scratch/assets/js/theme.js"
+: > "$scratch/theme.js"
 for file in content.ml highlight.ml markdown.ml main.ml; do
   ln -s "$root/site/$file" "$scratch/site/$file"
 done
@@ -58,7 +58,7 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 MD
 (
   cd "$scratch"
-  "$generator" --output "$scratch/output" --releases "$scratch/releases.json"
+  "$generator" --output "$scratch/output" --releases "$scratch/releases.json" --theme "$scratch/theme.js"
 )
 grep -Fq 'First title' "$scratch/output/docs/installation/index.html"
 grep -Fq 'id="first-heading"' "$scratch/output/docs/installation/index.html"
@@ -75,7 +75,7 @@ if grep -Fq 'data-language="text"' "$scratch/output/docs/index.html"; then exit 
 before=$(shasum -a 256 "$scratch/output/docs/installation/index.html")
 (
   cd "$scratch"
-  "$generator" --output "$scratch/output" --releases "$scratch/releases.json"
+  "$generator" --output "$scratch/output" --releases "$scratch/releases.json" --theme "$scratch/theme.js"
 )
 after=$(shasum -a 256 "$scratch/output/docs/installation/index.html")
 test "$before" = "$after"
@@ -94,7 +94,7 @@ let value = "changed"
 MD
 (
   cd "$scratch"
-  "$generator" --output "$scratch/output" --releases "$scratch/releases.json"
+  "$generator" --output "$scratch/output" --releases "$scratch/releases.json" --theme "$scratch/theme.js"
 )
 grep -Fq 'Updated title' "$scratch/output/docs/installation/index.html"
 grep -Fq 'id="updated-heading"' "$scratch/output/docs/installation/index.html"
@@ -112,7 +112,7 @@ slug: docs/installation
 MD
 (
   cd "$scratch"
-  "$generator" --output "$scratch/output" --releases "$scratch/releases.json"
+  "$generator" --output "$scratch/output" --releases "$scratch/releases.json" --theme "$scratch/theme.js"
 )
 grep -Fq 'title: "Setup: \"quotes\" #1"' "$scratch/output/docs/installation.md"
 grep -Fq 'description: "Use #hash: value"' "$scratch/output/docs/installation.md"
@@ -127,7 +127,7 @@ slug: docs/installation
 MD
 (
   cd "$scratch"
-  "$generator" --output "$scratch/output" --releases "$scratch/releases.json"
+  "$generator" --output "$scratch/output" --releases "$scratch/releases.json" --theme "$scratch/theme.js"
 )
 grep -Fq 'title: "Multi\nline"' "$scratch/output/docs/installation.md"
 cat >> "$scratch/src/content/docs/docs/installation.md" <<'MD'
@@ -143,7 +143,7 @@ chmod u+w "$scratch/assets/highlight/night-owl-dark.json"
 cp "$scratch/styled-theme.json" "$scratch/assets/highlight/night-owl-dark.json"
 (
   cd "$scratch"
-  "$generator" --output "$scratch/styled-output" --releases "$scratch/releases.json"
+  "$generator" --output "$scratch/styled-output" --releases "$scratch/releases.json" --theme "$scratch/theme.js"
 )
 grep -Fq 'class="ochre-font"' "$scratch/styled-output/docs/installation/index.html"
 grep -Fq -- '--0-font-weight:bold' "$scratch/styled-output/docs/installation/index.html"
@@ -158,14 +158,14 @@ slug: docs/new-guide
 MD
 (
   cd "$scratch"
-  "$generator" --output "$scratch/expanded-output" --releases "$scratch/releases.json"
+  "$generator" --output "$scratch/expanded-output" --releases "$scratch/releases.json" --theme "$scratch/theme.js"
 )
 grep -Fq 'Added guide' "$scratch/expanded-output/docs/new-guide/index.html"
 grep -Fq '<loc>https://ocaml-mlx.pages.dev/docs/new-guide/</loc>' "$scratch/expanded-output/sitemap-0.xml"
 printf '%s\n' '{"releases":[{"name":"1.2","tagName":"v1.2","slug":"1-2","publishedAt":"2026-01-02T00:00:00Z","date":"Jan 2, 2026","htmlUrl":"https://example.com/release","bodyHtml":"<p>Notes</p>","prerelease":false}],"error":null}' > "$scratch/release.json"
 (
   cd "$scratch"
-  "$generator" --output "$scratch/release-output" --releases "$scratch/release.json"
+  "$generator" --output "$scratch/release-output" --releases "$scratch/release.json" --theme "$scratch/theme.js"
 )
 grep -Fq 'repository.</p></div> <div class="release-list"> <section' "$scratch/release-output/changelog/index.html"
 grep -Fq '<h2>1.2</h2> <p> <code>v1.2</code>' "$scratch/release-output/changelog/index.html"
@@ -173,7 +173,7 @@ grep -Fq 'Jan 2, 2026</time> <a' "$scratch/release-output/changelog/index.html"
 printf '%s\n' '{"releases":[{"prerelease":false,"name":8}],"error":null}' > "$scratch/invalid-releases.json"
 if (
   cd "$scratch"
-  "$generator" --output "$scratch/invalid-releases-output" --releases "$scratch/invalid-releases.json"
+  "$generator" --output "$scratch/invalid-releases-output" --releases "$scratch/invalid-releases.json" --theme "$scratch/theme.js"
 ) > "$scratch/releases-error.log" 2>&1; then
   echo "Malformed release input was accepted" >&2
   exit 1
@@ -183,7 +183,7 @@ sed 's|slug: docs/installation|slug: docs/../escape|' "$scratch/src/content/docs
 cp "$scratch/invalid.md" "$scratch/src/content/docs/docs/installation.md"
 if (
   cd "$scratch"
-  "$generator" --output "$scratch/invalid-output" --releases "$scratch/releases.json"
+  "$generator" --output "$scratch/invalid-output" --releases "$scratch/releases.json" --theme "$scratch/theme.js"
 ) > "$scratch/error.log" 2>&1; then
   echo "Invalid route was accepted" >&2
   exit 1
@@ -194,7 +194,7 @@ rm "$scratch/src/content/docs/docs/installation.md"
 printf '\n<Mystery />\n' >> "$scratch/src/content/docs/docs/installation.mdx"
 if (
   cd "$scratch"
-  "$generator" --output "$scratch/invalid-mdx-output" --releases "$scratch/releases.json"
+  "$generator" --output "$scratch/invalid-mdx-output" --releases "$scratch/releases.json" --theme "$scratch/theme.js"
 ) > "$scratch/mdx-error.log" 2>&1; then
   echo "Unsupported MDX was accepted" >&2
   exit 1
@@ -202,13 +202,13 @@ fi
 grep -Fq 'unsupported MDX' "$scratch/mdx-error.log"
 rm "$scratch/src/content/docs/docs/installation.mdx"
 sed 's|slug: docs/../escape|slug: docs/installation|' "$scratch/invalid.md" > "$scratch/src/content/docs/docs/installation.md"
-rm "$scratch/assets/js/theme.js"
+rm "$scratch/theme.js"
 if (
   cd "$scratch"
-  "$generator" --output "$scratch/missing-theme-output" --releases "$scratch/releases.json"
+  "$generator" --output "$scratch/missing-theme-output" --releases "$scratch/releases.json" --theme "$scratch/theme.js"
 ) > "$scratch/theme-error.log" 2>&1; then
   echo "Missing theme script was accepted" >&2
   exit 1
 fi
-grep -Fq 'required asset missing: assets/js/theme.js' "$scratch/theme-error.log"
+grep -Fq "required asset missing: $scratch/theme.js" "$scratch/theme-error.log"
 test ! -e "$scratch/missing-theme-output/docs/installation/index.html"

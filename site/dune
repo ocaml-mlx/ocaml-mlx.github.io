@@ -1,5 +1,7 @@
-(executable
- (name main)
+(library
+ (name site_lib)
+ (wrapped false)
+ (modules content highlight markdown releases support server)
  (libraries
   yocaml
   yocaml_unix
@@ -9,8 +11,53 @@
   cmarkit
   ochre
   yojson
+  ptime
   str
   unix))
+
+(executable
+ (name main)
+ (modules main)
+ (libraries site_lib yocaml yocaml_unix yocaml_jingoo yaml jingoo yojson))
+
+(executable
+ (name build)
+ (modules build)
+ (libraries site_lib unix yojson))
+
+(executable
+ (name preview)
+ (modules preview)
+ (libraries site_lib))
+
+(executable
+ (name dev)
+ (modules dev)
+ (libraries site_lib unix))
+
+(executable
+ (name release_test)
+ (modules release_test)
+ (libraries site_lib yojson))
+
+(executable
+ (name curl_stub)
+ (modules curl_stub))
+
+(executable
+ (name release_fetch_test)
+ (modules release_fetch_test)
+ (libraries site_lib unix))
+
+(rule
+ (alias runtest)
+ (action
+  (run %{exe:release_fetch_test.exe} %{exe:curl_stub.exe})))
+
+(rule
+ (alias runtest)
+ (action
+  (run %{exe:release_test.exe})))
 
 (rule
  (alias runtest)

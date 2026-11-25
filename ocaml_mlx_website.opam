@@ -8,7 +8,8 @@ homepage: "https://github.com/ocaml-mlx/website"
 bug-reports: "https://github.com/ocaml-mlx/website/issues"
 depends: [
   "ocaml" {>= "5.2"}
-  "dune" {>= "3.16"}
+  "dune" {>= "3.21"}
+  "melange" {= "7.0.1-54"}
   "yocaml" {= "3.0.1"}
   "yocaml_unix" {= "3.0.1"}
   "yocaml_jingoo" {= "3.0.1"}
@@ -16,6 +17,7 @@ depends: [
   "jingoo"
   "cmarkit"
   "yojson"
+  "ptime"
   "ochre" {= "1.1.0"}
 ]
 pin-depends: [

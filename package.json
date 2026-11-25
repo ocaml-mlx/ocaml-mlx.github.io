@@ -4,27 +4,24 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "node --experimental-strip-types scripts/dev.ts",
+    "dev": "opam exec -- dune exec --root . site/dev.exe",
     "start": "npm run dev",
-    "build": "node --experimental-strip-types scripts/build.ts",
-    "preview": "node --experimental-strip-types scripts/preview.ts",
-    "check": "tsc --noEmit && node --check assets/js/theme.js && opam exec -- dune build @all @fmt @runtest",
-    "test": "node --experimental-strip-types --test tests/*.test.ts",
-    "test:parity": "node --experimental-strip-types scripts/parity.ts"
+    "build": "opam exec -- dune exec --root . site/build.exe",
+    "preview": "opam exec -- dune exec --root . site/preview.exe",
+    "check": "opam exec -- dune build @all @fmt @runtest",
+    "test": "opam exec -- dune build @checks @runtest site/build.exe site/preview.exe && opam exec -- node _build/default/checks/output/checks/build_test.js && opam exec -- node _build/default/checks/output/checks/preview_test.js && node _build/default/checks/output/checks/parity_test.js",
+    "test:parity": "opam exec -- dune build @checks && node _build/default/checks/output/checks/parity.js"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/ibm-plex-sans": "^5.2.8",
     "@fontsource/newsreader": "^5.2.10",
-    "marked": "^17.0.4",
     "sharp": "^0.34.2"
   },
   "devDependencies": {
     "@pagefind/default-ui": "1.4.0",
-    "@types/node": "^26.6.7",
     "esbuild": "0.28.2",
     "pagefind": "1.4.0",
-    "playwright": "^1.65.1",
-    "typescript": "^5.9.3"
+    "playwright": "^1.65.1"
   }
 }
